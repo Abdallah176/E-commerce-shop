@@ -1,9 +1,10 @@
-import React, { useContext } from 'react'
-import { ShopContext } from '../context/ShopContext'
+// import { ShopContext } from '../context/ShopContext'
 import Title from './Title';
+import useShopStore from '../store/useShopStore';
 
 export default function CartTotal() {
-    const {currency , delivery_fee , getCartAmount} = useContext(ShopContext);
+    const {currency , delivery_fee , getCartAmount} = useShopStore();
+    // const {currency , delivery_fee , getCartAmount} = useContext(ShopContext);
 
     return (
         <div className='w-full'>

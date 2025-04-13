@@ -6,12 +6,13 @@ import cartIcon from '../../assets/cart_icon.png'
 import menuIcon from '../../assets/menu_icon.png'
 import backIcon from '../../assets/dropdown_icon.png'
 import { useState } from 'react'
-import { useContext } from 'react'
-import { ShopContext } from '../../context/ShopContext'
+// import { ShopContext } from '../../context/ShopContext'
+import useShopStore from '../../store/useShopStore'
 
 export default function Navbar() {
     const [visible,setVisible] = useState(false);
-    const {setShowSearch, getCartCount} = useContext(ShopContext);
+    const {setShowSearch, getCartCount} = useShopStore();
+    // const {setShowSearch, getCartCount} = useContext(ShopContext);
     
     return (
         <div className="flex items-center justify-between py-5 font-medium">

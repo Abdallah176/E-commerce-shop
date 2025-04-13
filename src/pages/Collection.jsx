@@ -1,11 +1,13 @@
-import { useContext, useEffect, useState } from "react"
-import { ShopContext } from "../context/ShopContext"
+import { useEffect, useState } from "react"
+// import { ShopContext } from "../context/ShopContext"
 import dropdownImg from '../assets/dropdown_icon.png'
 import Title from "../components/Title";
 import ProductItem from "../components/ProductItem";
+import useShopStore from "../store/useShopStore";
 
 export default function Collection() {
-    const {products , search , showSearch} = useContext(ShopContext);
+    const { products , search , showSearch} = useShopStore();
+    // const {products , search , showSearch} = useContext(ShopContext);
     const [showFilter,setShowFilter] = useState(false);
     const [filterProducts,setFilterProducts] = useState([]);
     const [category,setCategory] = useState([]);

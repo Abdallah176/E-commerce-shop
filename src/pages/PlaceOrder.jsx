@@ -1,12 +1,14 @@
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { assets } from "../assets/assets";
 import CartTotal from "../components/CartTotal";
 import Title from "../components/Title";
-import { ShopContext } from "../context/ShopContext";
+// import { ShopContext } from "../context/ShopContext";
+import useShopStore from "../store/useShopStore";
 
 export default function PlaceOrder() {
     const [method,setMethod] = useState('cod');
-    const {navigate} = useContext(ShopContext);
+    const {navigate} = useShopStore();
+    // const {navigate} = useContext(ShopContext);
 
     return (
         <div className="flex flex-col sm:flex-row justify-between gap-4 pt-5 sm:pt-14 min-h-[80vh] border-t">

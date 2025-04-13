@@ -1,9 +1,10 @@
-import { useContext } from "react"
-import { ShopContext } from "../context/ShopContext"
+// import { ShopContext } from "../context/ShopContext"
 import Title from "../components/Title";
+import useShopStore from "../store/useShopStore";
 
 export default function Orders() {
-    const {products , currency} = useContext(ShopContext);
+    const {products , currency} = useShopStore();
+    // const {products , currency} = useContext(ShopContext);
 
     return (
         <div className="border-t pt-16">
