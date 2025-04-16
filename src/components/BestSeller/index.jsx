@@ -1,5 +1,4 @@
 import { useState } from "react"
-// import { ShopContext } from "../../context/ShopContext"
 import { useEffect } from "react";
 import Title from "../Title";
 import ProductItem from "../ProductItem";
@@ -7,10 +6,7 @@ import axios from "axios";
 
 export default function BestSeller() {
     const domain = "http://localhost:1337";
-    // const {products} = useContext(ShopContext);
     const [bestSeller,setBestSeller] = useState([]);
-    // console.log(products)
-
     
     const getData = () => {
         let endPoint = "/api/products";
@@ -22,14 +18,10 @@ export default function BestSeller() {
                 "pagination[limit]": 5
             }
         }).then((res) => {
-            // console.log(res.data.data);
             setBestSeller(res.data.data);
         })
     }
-
     useEffect(() => {
-        // const bestProduct = products.filter((el) => (el.bestseller));
-        // setBestSeller(bestProduct.slice(0,5))
         getData()
     },[])
 
@@ -43,7 +35,13 @@ export default function BestSeller() {
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 gap-y-6">
                 {
                     bestSeller.map((el) => (
-                        <ProductItem key={el.id} id={el.id} image={domain + el.image.url} name={el.name} price={el.price} />
+                            <ProductItem
+                                key={el.id}
+                                id={el.documentId}
+                                image={domain + el.image.url}
+                                name={el.name} 
+                                price={el.price}
+                            />
                     ))
                 }
             </div>

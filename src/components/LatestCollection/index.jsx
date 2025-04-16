@@ -1,18 +1,11 @@
 import { useEffect, useState } from "react"
-// import { ShopContext } from "../../context/ShopContext"
 import Title from "../Title"
 import ProductItem from "../ProductItem";
 import axios from "axios";
-import useShopStore from "../../store/useShopStore";
-// import { data } from "react-router-dom";
 
 export default function LatestCollection() {
     const domain = "http://localhost:1337";
-    const {products} = useShopStore();
-    // const { products } = useContext(ShopContext);
     const [LatestProducts,setLatestProducts] = useState([]);
-    // const [appCtegories,setAppCtegories] = useState([]);
-    // console.log(products);
 
     const getData = () => {
         let endPoint = "/api/products";
@@ -24,13 +17,11 @@ export default function LatestCollection() {
                 "pagination[limit]": 10
             }
         }).then((res) => {
-            // console.log(res.data.data);
             setLatestProducts(res.data.data);
         })
     }
     useEffect(() => {
-        // setLatestProducts(products.slice(0,10));
-        getData(products.slice(0,10))
+        getData()
     },[])
 
     return (
@@ -46,7 +37,7 @@ export default function LatestCollection() {
                 {
                     LatestProducts.map((el) => (
                         // console.log("Products from Strapi:", appCtegories);
-                        <ProductItem key={el.id} id={el.id} image={domain + el.image.url} name={el.name} price={el.price} />
+                        <ProductItem key={el.id} id={el.documentId} image={domain + el.image.url} name={el.name} price={el.price} />
                     ))
                 }
             </div>

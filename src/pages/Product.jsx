@@ -1,52 +1,66 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { assets } from "../assets/assets";
 import RelatedProducts from "../components/RelatedProducts";
 import useShopStore from "../store/useShopStore";
+import axios from "axios";
 
 export default function Product() {
-    const { productId } = useParams();
-    const { products, currency, addToCart } = useShopStore();
-    const [productData, setProductData] = useState(null);
+    const domain = "http://localhost:1337";
+    const params = useParams();
+    const { currency, addToCart } = useShopStore();
+    const [productData, setProductData] = useState('false');
     const [image, setImage] = useState('');
     const [size, setSize] = useState('');
+    const navigate = useNavigate();
 
-    useEffect(() => {
-        if (products.length > 0) {
-            const foundProduct = products.find((item) => item._id === productId);
-            console.log("productId from URL:", productId);
-            console.log("First Product ID:", products[0]?._id);
-            console.log("Found product:", foundProduct);
-
-            if (foundProduct) {
-                setProductData(foundProduct);
-                setImage(foundProduct.image[0]);
+    const getData = () => {
+        const documentId = params.id;
+        console.log("PRODUCT ID:", documentId);
+        const endPoint = `/api/products/${documentId}`;
+        const url = domain + endPoint;
+        axios.get(url, {
+            params: {
+                populate: "*"
             }
-        }
-    }, [productId, products]);
+        }).then((res) => {
+            const data = res.data.data;
+            console.log("Full API Response:", res.data);
+            if (!data) {
+                navigate('/error');
+                return;
+            }
+            setProductData(data);
+            setImage(domain + data.image.url);
+        })
+    }
+    useEffect(() => {
+        getData()
+        console.log("Fetching product by ID:", params.id);
+        console.log("productssssssss" , productData)
+    }, [params.id]);
 
     if (!productData) {
         return <div className="text-center py-20 text-gray-500">Loading product...</div>;
     }
-
     return (
         <div className="border-t-2 pt-10 transition-opacity ease-in duration-500 opacity-100">
             <div className="flex gap-12 sm:gap-12 flex-col sm:flex-row">
                 {/* Product Image */}
                 <div className="flex-1 flex flex-col-reverse gap-3 sm:flex-row">
                     <div className="flex sm:flex-col overflow-x-auto sm:overflow-y-scroll justify-between sm:justify-normal sm:w-[18.7%] w-full">
-                        {productData.image.map((item, index) => (
+                        {/* {productData.image.map((item, index) => (
                             <img
-                                onClick={() => setImage(item)}
-                                src={item}
                                 key={index}
+                                src={domain + productData.image.data.attributes.url}
+                                onClick={() => setImage(domain + productData.image.data.attributes.url)}
                                 className="w-[24%] sm:w-full sm:mb-3 flex-shrink-0 cursor-pointer"
                                 alt=""
                             />
-                        ))}
+                        ))} */}
                     </div>
                     <div className="w-full sm:w-[80%]">
-                        <img className="w-full h-auto" src={image || '/fallback.jpg'} alt="" />
+                    <img className="w-full h-auto"  src={image || '/fallback.jpg'} alt={productData.name || "product imageeeee"} onError={(e) => { e.target.src = '/fallback.jpg'; }}/>
                     </div>
                 </div>
 
@@ -66,20 +80,22 @@ export default function Product() {
                     <div className="flex flex-col gap-4 my-8">
                         <p>Select Size</p>
                         <div className="flex gap-2">
-                            {productData.sizes.map((item, index) => (
+                        {
+                            productData.sizes && Array.isArray(productData.sizes) && productData.sizes.map((item, index) => (
                                 <button
-                                    onClick={() => setSize(item)}
-                                    className={`border py-2 px-4 bg-gray-100 ${item === size ? 'border-orange-500' : ''}`}
                                     key={index}
+                                    onClick={() => setSize(item.value)}
+                                    className={`border py-2 px-4 bg-gray-100 ${item.value === size ? 'border-orange-500' : ''}`}
                                 >
-                                    {item}
+                                    {item.value}
                                 </button>
-                            ))}
+                            ))
+                        }
                         </div>
                     </div>
 
                     <button
-                        onClick={() => addToCart(productData._id, size)}
+                        onClick={() => addToCart(productData.id , size, productData.name)}
                         className="bg-black text-white px-8 py-3 text-sm active:bg-gray-700 cursor-pointer"
                     >
                         ADD TO CART
@@ -105,6 +121,8 @@ export default function Product() {
                     <p>Each product usually has its own dedicated page with relevant information.</p>
                 </div>
             </div>
+
+
 
             {/* Related Products */}
             <RelatedProducts category={productData.category} subCategory={productData.subCategory} />
