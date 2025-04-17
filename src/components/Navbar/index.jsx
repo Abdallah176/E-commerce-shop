@@ -6,13 +6,11 @@ import cartIcon from '../../assets/cart_icon.png'
 import menuIcon from '../../assets/menu_icon.png'
 import backIcon from '../../assets/dropdown_icon.png'
 import { useState } from 'react'
-// import { ShopContext } from '../../context/ShopContext'
 import useShopStore from '../../store/useShopStore'
 
 export default function Navbar() {
     const [visible,setVisible] = useState(false);
     const {setShowSearch, getCartCount} = useShopStore();
-    // const {setShowSearch, getCartCount} = useContext(ShopContext);
     
     return (
         <div className="flex items-center justify-between py-5 font-medium">
@@ -35,6 +33,10 @@ export default function Navbar() {
                 </NavLink>
                 <NavLink to='/contact' className='flex flex-col items-center gap-1'>
                     <p>Contact</p>
+                    <hr className='w-2/4 h-[1.5px] bg-gray-700 hidden' />
+                </NavLink>
+                <NavLink to='/wishlist' className='flex flex-col items-center gap-1'>
+                    <p>WishList</p>
                     <hr className='w-2/4 h-[1.5px] bg-gray-700 hidden' />
                 </NavLink>
             </ul>
@@ -71,6 +73,7 @@ export default function Navbar() {
                     <NavLink onClick={()=>setVisible(false)} className='py-2 pl-6' to='/collection'>COLLECTION</NavLink>
                     <NavLink onClick={()=>setVisible(false)} className='py-2 pl-6' to='/about'>ABOUT</NavLink>
                     <NavLink onClick={()=>setVisible(false)} className='py-2 pl-6' to='/contact'>CONTACT</NavLink>
+                    <NavLink onClick={()=>setVisible(false)} className='py-2 pl-6' to='/wishlist'>WishList</NavLink>
                 </div>           
             </div>
         </div>

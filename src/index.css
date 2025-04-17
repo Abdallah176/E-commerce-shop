@@ -24,3 +24,53 @@ a.active hr {
         color: white;
     }
 }
+/* Hero Section */
+@keyframes floatImage {
+    0%, 100% {
+    transform: scale(1) translateY(0px);
+    }
+    50% {
+    transform: scale(1.05) translateY(-10px);
+    }
+}
+
+@keyframes floatText {
+    0%, 100% {
+    transform: translateY(0px);
+    }
+    50% {
+    transform: translateY(-8px);
+    }
+}
+
+@keyframes typewriter {
+    0% { width: 0 }
+    100% { width: 100% }
+}
+
+@keyframes gradientFade {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+@layer utilities {
+    .animate-image-float {
+    animation: floatImage 6s ease-in-out infinite;
+    }
+
+    .animate-text-float {
+    animation: floatText 4s ease-in-out infinite;
+    }
+
+    .animate-typewriter {
+    animation: typewriter 3s steps(30) 1s forwards;
+    }
+
+    .animate-gradientFade {
+    background-size: 200% 200%;
+    animation: gradientFade 6s ease infinite;
+    }
+}
+
+

@@ -9,10 +9,12 @@ export default function Product() {
     const domain = "http://localhost:1337";
     const params = useParams();
     const { currency, addToCart } = useShopStore();
-    const [productData, setProductData] = useState('false');
+    const [productData, setProductData] = useState(null);
     const [image, setImage] = useState('');
     const [size, setSize] = useState('');
     const navigate = useNavigate();
+
+    
 
     const getData = () => {
         const documentId = params.id;
@@ -31,6 +33,8 @@ export default function Product() {
                 return;
             }
             setProductData(data);
+            console.log('gggggggggggggggggg',data)
+            console.log(data.documentId)
             setImage(domain + data.image.url);
         })
     }
@@ -58,9 +62,21 @@ export default function Product() {
                                 alt=""
                             />
                         ))} */}
+
+                        {
+                        productData.images?.data.map((imgObj, idx) => (
+                            <img
+                                key={idx}
+                                src={`${domain}${imgObj.attributes.url}`}
+                                onClick={() => setImage(`${domain}${imgObj.attributes.url}`)}
+                                className="..."
+                                alt={`Thumbnail ${idx}`}
+                            />
+                            ))
+                        }
                     </div>
                     <div className="w-full sm:w-[80%]">
-                    <img className="w-full h-auto"  src={image || '/fallback.jpg'} alt={productData.name || "product imageeeee"} onError={(e) => { e.target.src = '/fallback.jpg'; }}/>
+                    <img className="w-full h-auto"  src={image} alt={productData.name || "product imageeeee"} onError={(e) => { e.target.src = '/fallback.jpg'; }}/>
                     </div>
                 </div>
 
@@ -128,4 +144,9 @@ export default function Product() {
             <RelatedProducts category={productData.category} subCategory={productData.subCategory} />
         </div>
     );
+
+
+
+
+
 }

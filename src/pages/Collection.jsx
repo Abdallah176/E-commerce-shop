@@ -61,9 +61,6 @@ export default function Collection() {
         console.log("Active Category Filters:", category);
         console.log("Active SubCategory Filters:", subCategory);
     };
-    
-    
-
     const sortProduct = () => {
         let fpCopy = [...filterProducts];
         switch (sortType) {
@@ -168,4 +165,7 @@ export default function Collection() {
             </div>
         </div>
     )
+
+
+    
 }
