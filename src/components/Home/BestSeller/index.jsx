@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { useEffect } from "react";
-import Title from "../Title";
-import ProductItem from "../ProductItem";
+import Title from "../../Title";
+import ProductItem from "../../ProductItem";
 import axios from "axios";
 
 export default function BestSeller() {

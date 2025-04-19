@@ -135,7 +135,47 @@ const useShopStore = create(
                 }
 
                 return totalAmount;
-            }
+            },
+            
+            getFormattedCartItems: () => {
+                const { cartItems, products } = get();
+                const formatted = [];
+            
+                for (const itemId in cartItems) {
+                    const product = products.find(p => p.id == itemId);
+                    if (!product) continue;
+            
+                    for (const size in cartItems[itemId]) {
+                        formatted.push({
+                            product: itemId,
+                            size: size,
+                            quantity: cartItems[itemId][size],
+                            name: product.name,
+                            price: product.price
+                        });
+                    }
+                }
+            
+                return formatted;
+            },
+            
+            getTotalPrice: () => {
+                const cartItems = get().cartItems;
+                const products = get().products;
+                let total = 0;
+            
+                for (const itemId in cartItems) {
+                    const product = products.find(p => p.id == itemId);
+                    if (product) {
+                        for (const size in cartItems[itemId]) {
+                            total += product.price * cartItems[itemId][size];
+                        }
+                    }
+                }
+            
+                return total;
+            },
+            
         })
     )
 );

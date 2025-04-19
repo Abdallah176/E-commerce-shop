@@ -1,9 +1,9 @@
-import Banner from "../components/Banner/Banner";
-import BestSeller from "../components/BestSeller";
-import Hero from "../components/Hero";
-import LatestCollection from "../components/LatestCollection";
-import NewsLetterBox from "../components/NewsLettetBox";
-import OurPolicy from "../components/OurPolicy";
+import Banner from "../components/Home/Banner/Banner";
+import BestSeller from "../components/Home/BestSeller";
+import Hero from "../components/Home/Hero";
+import LatestCollection from "../components/Home/LatestCollection";
+import NewsLetterBox from "../components/Home/NewsLettetBox";
+import OurPolicy from "../components/Home/OurPolicy";
 
 export default function Home() {
     return (

@@ -14,7 +14,11 @@
     "animate.css": "^4.1.1",
     "axios": "^1.8.4",
     "bootstrap": "^5.3.3",
+    "emailjs-com": "^3.2.0",
+    "formik": "^2.4.6",
     "framer-motion": "^12.7.3",
+    "location": "^0.0.1",
+    "lottie-react": "^2.4.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-icons": "^5.5.0",
@@ -22,6 +26,7 @@
     "react-toastify": "^11.0.5",
     "sweetalert": "^2.1.2",
     "tailwindcss": "^4.0.14",
+    "yup": "^1.6.1",
     "zustand": "^5.0.3"
   },
   "devDependencies": {

@@ -1,6 +1,6 @@
-import exchangeIcon from '../../assets/exchange_icon.png'
-import qualityIcon from '../../assets/quality_icon.png'
-import supportImg from '../../assets/support_img.png'
+import exchangeIcon from '../../../assets/exchange_icon.png'
+import qualityIcon from '../../../assets/quality_icon.png'
+import supportImg from '../../../assets/support_img.png'
 
 
 export default function OurPolicy() {
