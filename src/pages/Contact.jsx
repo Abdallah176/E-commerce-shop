@@ -1,6 +1,5 @@
 import { toast, ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
-import Title from "../components/Title";
 import ContactTitle from "../components/Contact/ContactTitle";
 import ContactForm from "../components/Contact/ContactForm";
 import GoogleMap from "../components/Contact/GoogleMap";

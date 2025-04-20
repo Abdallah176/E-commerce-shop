@@ -20,6 +20,12 @@ const useShopStore = create(
             setSearch: (search) => set({ search }),
             setShowSearch: (value) => set({ showSearch: value }),
             setSelectedCategory: (category) => set({ selectedCategory: category }),
+            setProducts: (products) => set({ products }),
+
+
+            getProductById: (id) => {
+                return get().products.find(product => product.id === parseInt(id));
+            },
 
             fetchProducts: async () => {
                 try {

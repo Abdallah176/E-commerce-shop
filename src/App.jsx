@@ -15,7 +15,7 @@ import Footer from './components/Footer'
 import SearchBar from './components/SearchBar'
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import ThankYou from './components/ThankYou'
+import ThankYou from './components/Contact/ThankYou'
 import MarqueeText from './components/MarqueeText'
 import ThankYouu from './components/PlaceOrder/ThankYouu'
 
