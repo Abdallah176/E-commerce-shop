@@ -7,8 +7,8 @@ export default function ProductGallery({ images, setImage, image }) {
                 {images?.map((imgObj, idx) => (
                     <img
                         key={idx}
-                        src={`${domain}${imgObj.attributes.url}`}
-                        onClick={() => setImage(`${domain}${imgObj.attributes.url}`)}
+                        src={`${domain}${imgObj.url}`}
+                        onClick={() => setImage(`${domain}${imgObj.url}`)}
                         className="cursor-pointer w-[24%] sm:w-full sm:mb-3 flex-shrink-0"
                         alt={`Thumbnail ${idx}`}
                     />

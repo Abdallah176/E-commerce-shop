@@ -23,7 +23,7 @@ export default function MarqueeText() {
         return () => cancelAnimationFrame(animation);
     }, []);
 
-    const text = "Summer Collection 25 — ";
+    const text = "Shop All You Want — ";
 
     return (
         <div className="w-full overflow-hidden bg-black text-white py-1 border-b border-white">
@@ -35,7 +35,7 @@ export default function MarqueeText() {
                     {[...Array(2)].map((_, i) => (
                         <div key={i} className="flex gap-5">
                             {[...Array(50)].map((_, j) => (
-                                <span key={j} className=" text-l font-semibold tracking-wide">
+                                <span key={j} className=" text-sm font-semibold tracking-wide">
                                     {text}
                                 </span>
                             ))}

@@ -18,13 +18,14 @@ import 'react-toastify/dist/ReactToastify.css';
 import ThankYou from './components/Contact/ThankYou'
 import MarqueeText from './components/MarqueeText'
 import ThankYouu from './components/PlaceOrder/ThankYouu'
+import Error from './pages/Error'
 
 
 export default function App() {
   return (
-    <div className='px-4 sm:px-[5vw] md:px-[7vw] lg:px-[9vw]'>
+    <div className='px-4 sm:px-[5vw] md:px-[7vw] lg:px-[2vw]'>
         <ToastContainer />
-          <MarqueeText />
+          <MarqueeText/>
           <Navbar />
           <SearchBar />
           <Routes>
@@ -40,6 +41,7 @@ export default function App() {
             <Route path='/place-order' element={<PlaceOrder />} />
             <Route path="/thank-youu" element={<ThankYouu />} />
             <Route path='/orders' element={<Orders />} />
+            <Route path='/error' element={<Error />} />
           </Routes>
           <Footer />
     </div>

@@ -18,26 +18,17 @@ export default function Product() {
 
     const getData = () => {
         const documentId = params.id;
-        console.log("PRODUCT ID:", documentId);
-        const endPoint = `/api/products/${documentId}`;
-        const url = domain + endPoint;
-        axios.get(url, {
-            params: {
-                populate: "*"
-            }
-        }).then((res) => {
-            const data = res.data.data;
-            console.log("Full API Response:", res.data);
+        const url = `${domain}/api/products?filters[documentId][$eq]=${documentId}&populate=*`;
+        axios.get(url).then((res) => {
+            const data = res.data.data[0];
             if (!data) {
                 navigate('/error');
                 return;
             }
             setProductData(data);
-            console.log('gggggggggggggggggg',data)
-            console.log(data.documentId)
             setImage(domain + data.image.url);
-        })
-    }
+        });
+    };
     useEffect(() => {
         getData()
         console.log("Fetching product by ID:", params.id);

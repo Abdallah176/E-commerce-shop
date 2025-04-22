@@ -9,15 +9,13 @@ export default function LatestCollection() {
 
     const getData = () => {
         const url = `${domain}/api/products`;
-        axios
-        .get(url, {
+        axios.get(url, {
             params: {
-            populate: "*",
-            "filters[collection_type][$eq]": "latest",
-            "pagination[limit]": 10,
+                populate: "*",
+                "filters[collection_type][$eq]": "latest",
+                "pagination[limit]": 10,
             },
-        })
-        .then((res) => {
+        }).then((res) => {
             setLatestProducts(res.data.data);
         });
     };
@@ -27,21 +25,30 @@ export default function LatestCollection() {
     }, []);
 
     return (
-        <section className="my-20 px-6 sm:px-12">
-            <div className="text-center mb-12">
+        <section className="py-16 bg-white">
+            {/* Title Section */}
+            <div className="text-center mb-12 px-4">
                 <Title text1={"LATEST"} text2={"COLLECTION"} />
-                <p className="mt-4 text-sm sm:text-base text-gray-600 max-w-xl mx-auto">
-                Step into the spotlight with the newest fashion arrivals curated just for you.
+                <p className="mt-4 text-base sm:text-lg text-gray-600 max-w-2xl mx-auto">
+                    Step into the spotlight with the newest fashion arrivals curated just for you abdk dadljduhdwdl jkohbk jkookjsdw jugdwkoqjdihlp, gdwdqfijq .
                 </p>
             </div>
 
             {/* Product Grid */}
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 gap-6">
-                {latestProducts.map((el) => (
-                    <ProductItem key={el.id} id={el.documentId} image={domain + el.image.url} name={el.name} price={el.price} />
-                ))}
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-5 gap-6 px-4">
+                {latestProducts.map((el) => {
+                    return (
+                        <div
+                            key={el.id}
+                            className="bg-gray-50 rounded-xl shadow-md hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 p-4"
+                        >
+                            <ProductItem
+                                key={el.id} id={el.documentId} image={domain + el.image.url} name={el.name} price={el.price} 
+                            />
+                        </div>
+                    );
+                })}
             </div>
         </section>
     );
-    }
-
+}

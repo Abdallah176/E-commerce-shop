@@ -34,46 +34,53 @@ export default function Cart() {
     }, [cartItems, products]);
 
     return (
-        <div className="border-t pt-14">
-            <div className="text-2xl mb-3">
-                <Title text1={"YOUR"} text2={"CART"} />
+        <section className="min-h-screen bg-gray-50 pt-16 pb-24 px-4 sm:px-8">
+            {/* Title */}
+            <div className="text-center mb-12">
+                <Title text1="YOUR" text2="CART" />
+                <p className="mt-4 text-gray-600 text-sm sm:text-base max-w-xl mx-auto">
+                    Review your items before proceeding to checkout.
+                </p>
             </div>
 
-            <div>
-                {cartData.length === 0 ? (
-                    <EmptyCart />
-                ) : (
-                    cartData.map((item, index) => {
-                        const productData = products.find(p => p.id === Number(item.id));
-                        if (!productData) return null;
-                        return (
-                            <CartItem
-                                key={index}
-                                item={item}
-                                productData={productData}
-                                currency={currency}
-                            />
-                        );
-                    })
-                )}
-            </div>
+            {/* Cart Content */}
+            {cartData.length === 0 ? (
+                <EmptyCart />
+            ) : (
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
+                    {/* Left Side: Cart Items */}
+                    <div className="lg:col-span-2 space-y-6">
+                        {cartData.map((item, index) => {
+                            const productData = products.find(p => p.id === Number(item.id));
+                            if (!productData) return null;
+                            return (
+                                <div
+                                    key={index}
+                                    className="bg-white p-4 sm:p-6 rounded-xl shadow-md hover:shadow-lg transition duration-300"
+                                >
+                                    <CartItem
+                                        item={item}
+                                        productData={productData}
+                                        currency={currency}
+                                    />
+                                </div>
+                            );
+                        })}
+                    </div>
 
-            {cartData.length > 0 && (
-                <div className="flex justify-end my-20">
-                    <div className="w-full sm:w-[450px]">
+                    {/* Right Side: Total + Button */}
+                    <div className="sticky top-24 bg-white rounded-xl shadow-md p-6 space-y-6 h-fit">
                         <CartTotal />
-                        <div className="w-full text-end">
-                            <button
-                                onClick={() => navigate("/place-order")}
-                                className="bg-black text-white text-sm my-8 px-8 py-3"
-                            >
-                                PROCEED TO CHECKOUT
-                            </button>
-                        </div>
+                        <button
+                            onClick={() => navigate("/place-order")}
+                            className="w-full px-8 py-3 rounded-full bg-black text-white font-semibold tracking-wide text-sm sm:text-base hover:bg-gray-800 transition-all duration-300 cursor-pointer"
+                        >
+                            PROCEED TO CHECKOUT
+                        </button>
                     </div>
                 </div>
             )}
-        </div>
+        </section>
     );
 }
 

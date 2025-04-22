@@ -38,12 +38,14 @@ const useShopStore = create(
                         price: item.price,
                         image: item.image?.url ? `${domain}${item.image.url}` : '',
                         description: item.description,
-                        category: item.category, 
-                        subCategory: item.subCategory
+                        category: item.category,
+                        subCategory: item.subCategory?.data?.name,
+                        documentId: item.documentId,
                     }));
                     set({ products: data });
-                } catch (err) {
-                    console.error("Failed to fetch products:", err);
+                } catch (products) {
+                    console.error("Failed to fetch products:", products);
+                    console.log(products)
                 }
             },
 

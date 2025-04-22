@@ -1,5 +1,5 @@
 import { Link, NavLink } from 'react-router-dom'
-import imgLogo from '../../assets/logo-3.png'
+import imgLogo from '../../assets/logoo.png'
 import searchIcon from '../../assets/search_icon.png'
 import profileIcon from '../../assets/profile_icon.png'
 import cartIcon from '../../assets/cart_icon.png'
@@ -13,11 +13,11 @@ export default function Navbar() {
     const {setShowSearch, getCartCount} = useShopStore();
     
     return (
-        <div className="flex items-center justify-between py-5 font-medium">
+        <div className="flex items-center justify-between py-5 font-bold">
             <Link to={'/'}>
                 <img className='w-28' src={imgLogo} />
             </Link>
-            {/* Small ==> Hidden */}
+            
             <ul className='hidden sm:flex gap-5 text-sm text-gray-700'>
                 <NavLink to='/' className='flex flex-col items-center gap-1'>
                     <p>Home</p>
