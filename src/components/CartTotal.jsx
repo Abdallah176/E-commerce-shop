@@ -9,31 +9,31 @@ export default function CartTotal() {
 
     return (
         <motion.div 
-            className="w-full p-4 rounded-2xl shadow-lg border"
+            className="w-full p-6 bg-gradient-to-r from-orange-600 to-purple-600 text-white rounded-3xl shadow-xl border border-gray-200"
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
+            transition={{ duration: 0.6 }}
         >
-            <div className="text-2xl mb-4">
-                <Title text1={'CART'} text2={'TOTALS'} />
+            <div className="text-3xl font-bold mb-6 text-center md:text-left">
+                <Title text1={'YOUR'} text2={'TOTAL'} />
             </div>
 
-            <div className="flex flex-col gap-3 text-sm text-gray-700">
+            <div className="flex flex-col gap-4 text-sm sm:text-base md:text-lg">
                 <div className="flex justify-between">
                     <p>Subtotal</p>
                     <p>{currency}{subtotal}.00</p>
                 </div>
-                <hr />
+                <hr className="border-t border-gray-300" />
 
                 <div className="flex justify-between">
                     <p>Shipping Fee</p>
                     <p>{currency}{delivery_fee}.00</p>
                 </div>
-                <hr />
+                <hr className="border-t border-gray-300" />
 
-                <div className="flex justify-between font-semibold text-base">
-                    <b>Total</b>
-                    <b>{currency}{total}.00</b>
+                <div className="flex justify-between font-semibold text-lg">
+                    <p>Total</p>
+                    <p>{currency}{total}.00</p>
                 </div>
             </div>
         </motion.div>

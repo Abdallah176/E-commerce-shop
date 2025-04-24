@@ -1,43 +1,52 @@
 import { motion } from "framer-motion";
+import { FaCheckCircle, FaTruck, FaHeadset } from "react-icons/fa";
 import Title from "../Title";
 
 export default function WhyChooseUs() {
     const reasons = [
         {
-        title: "Quality Assurance",
-        desc: "We meticulously select and vet each product to ensure it meets our stringent quality standards."
+            icon: <FaCheckCircle className="text-orange-500 text-4xl" />,
+            title: "Top-Quality Products",
+            desc: "Handpicked items that meet our highest standards for quality and style."
         },
         {
-        title: "Convenience",
-        desc: "With our user-friendly interface and hassle-free ordering process, shopping has never been easier."
+            icon: <FaTruck className="text-orange-500 text-4xl" />,
+            title: "Fast & Free Delivery",
+            desc: "Enjoy quick, reliable shipping with no extra cost on all your orders."
         },
         {
-        title: "Exceptional Customer Service",
-        desc: "Our team of dedicated professionals is here to assist you every step of the way."
+            icon: <FaHeadset className="text-orange-500 text-4xl" />,
+            title: "24/7 Support",
+            desc: "We’re always here to help — anytime, anywhere, with any issue."
         }
     ];
 
     return (
-        <div className="mb-24">
-        <div className="text-xl py-10">
-            <Title text1={"WHY"} text2={"CHOOSE US"} />
-        </div>
-        <motion.div
-            className="grid grid-cols-1 md:grid-cols-3 gap-8"
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            transition={{ duration: 1.5 }}
-        >
-            {reasons.map((item, index) => (
-            <div
-                key={index}
-                className="border p-6 rounded-lg shadow hover:shadow-lg transition-all"
-            >
-                <b>{item.title}</b>
-                <p className="text-gray-500 mt-2 text-sm">{item.desc}</p>
+        <div className="my-20 px-4 sm:px-10">
+            <div className="text-xl py-10 text-center">
+                <Title text1="WHY" text2="CHOOSE US" />
             </div>
-            ))}
-        </motion.div>
+
+            <motion.div
+                className="grid grid-cols-1 md:grid-cols-3 gap-8"
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 1 }}
+            >
+                {reasons.map((item, index) => (
+                    <motion.div
+                        key={index}
+                        className="bg-white p-8 rounded-2xl shadow-md hover:shadow-xl border border-gray-100 transition-all duration-300 text-center flex flex-col items-center"
+                        whileHover={{ scale: 1.03 }}
+                    >
+                        <div className="mb-4 flex items-center justify-center w-16 h-16 bg-orange-100 rounded-full">
+                            {item.icon}
+                        </div>
+                        <h3 className="text-lg font-semibold text-gray-800 mt-2">{item.title}</h3>
+                        <p className="text-gray-500 mt-2 text-sm leading-relaxed">{item.desc}</p>
+                    </motion.div>
+                ))}
+            </motion.div>
         </div>
     );
 }

@@ -56,7 +56,7 @@ import { FaUser, FaEnvelope, FaPhone, FaMapMarkedAlt, FaCity, FaFlag, FaGlobe, F
             });
         }, 1500);
         } catch (err) {
-        toast.error("Something went wrong, please try again.");
+        toast.error("Something went wrong, please try again.",err);
         } finally {
         setLoading(false);
         }

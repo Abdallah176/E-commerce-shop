@@ -1,5 +1,5 @@
 import React from 'react';
-import heroImg from '../../../assets/heroo.jpg';
+import heroImg from '../../../assets/hero-sec.png';
 
 export default function Hero() {
     return (
@@ -34,7 +34,7 @@ export default function Hero() {
                 href="#collection"
                 className="relative overflow-hidden mt-4 px-8 py-3 rounded-full bg-gradient-to-r from-orange-700 via-pink-100 to-black text-white text-sm sm:text-base font-semibold tracking-wide transition-all duration-300 transform hover:scale-105 animate-fade-in delay-300 shadow-lg hover:shadow-xl"
                 >
-                <span className="relative z-10">Shop the Collection</span>
+                <a href='/lastcollection' className="relative z-10">Shop the Collection</a>
                 
                 {/* Shine Effect - Alternate */}
                 <span className="absolute top-0 left-[-75%] w-1/2 h-full bg-white opacity-20 rotate-12 pointer-events-none animate-shine-alternate"></span>

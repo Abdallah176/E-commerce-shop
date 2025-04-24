@@ -5,28 +5,28 @@ export default function WishlistGrid() {
     const { wishlist, removeFromWishlist } = useShopStore();
 
     if (wishlist.length === 0) {
-        return <p>Your wishlist is empty.</p>;
+        return <p className="text-center text-lg text-gray-500">Your wishlist is empty.</p>;
     }
 
     return (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 pb-10">
             {wishlist.map((product) => (
-                <div key={product.id} className="wishlist-item border rounded-lg p-4 bg-white shadow-lg hover:shadow-xl transition-shadow duration-300">
+                <div key={product.id} className="wishlist-item border-2 border-gray-200 rounded-lg p-8 bg-white shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-101">
                     <img 
                         src={product.image} 
                         alt={product.name} 
-                        className="w-full h-65 object-cover rounded-lg mb-4"
+                        className="w-full h-80 object-cover rounded-lg mb-6"
                     />
                     <div className="flex justify-between items-center">
                         <div>
-                            <p className="font-medium text-md">{product.name}</p>
-                            <p className="text-gray-600">{product.currency}{product.price}</p> 
+                            <p className="font-semibold text-lg text-gray-800">{product.name}</p>
+                            <p className="text-gray-500 mt-1">{product.currency}{product.price}</p> 
                         </div>
                         <button 
                             onClick={() => removeFromWishlist(product.id)} 
-                            className="text-red-600 hover:text-black cursor-pointer"
+                            className="text-orange-600 hover:text-orange-800 transition-colors duration-200 cursor-pointer"
                         >
-                            <FaTrashAlt className="text-xl" />  
+                            <FaTrashAlt className="text-2xl" />  
                         </button>
                     </div>
                 </div>

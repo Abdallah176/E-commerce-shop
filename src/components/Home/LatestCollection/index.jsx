@@ -29,8 +29,8 @@ export default function LatestCollection() {
             {/* Title Section */}
             <div className="text-center mb-12 px-4">
                 <Title text1={"LATEST"} text2={"COLLECTION"} />
-                <p className="mt-4 text-base sm:text-lg text-gray-600 max-w-2xl mx-auto">
-                    Step into the spotlight with the newest fashion arrivals curated just for you abdk dadljduhdwdl jkohbk jkookjsdw jugdwkoqjdihlp, gdwdqfijq .
+                <p className="mt-4 text-base sm:text-xl text-gray-600 max-w-2xl mx-auto">
+                    Step into the spotlight with the newest fashion arrivals curated just for you
                 </p>
             </div>
 

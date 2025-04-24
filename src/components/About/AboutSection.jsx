@@ -1,46 +1,54 @@
-// components/About/AboutSection.jsx
 import { motion } from "framer-motion";
 import { assets } from "../../assets/assets";
 
 export default function AboutSection() {
-    return (
-        <div className="my-14 flex flex-col md:flex-row gap-16 items-center">
-            <motion.img
-                className="w-full md:max-w-[450px] rounded-xl shadow-lg"
-                src={assets.about_img}
-                alt="about"
-                initial={{ opacity: 0, scale: 0.8 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.7 }}
+  return (
+    <section className="relative py-20 bg-gradient-to-r from-orange-50 to-white">
+      <div className="max-w-6xl mx-auto px-4 sm:px-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="relative"
+          >
+            <div className="backdrop-blur-md bg-white/60 rounded-3xl p-8 shadow-lg border border-orange-100">
+              <h2 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-6">
+                Who We Are
+              </h2>
+              <p className="text-lg text-gray-700 mb-4 leading-relaxed">
+                At <span className="font-semibold text-orange-600">Forever</span>, we
+                believe that shopping should be more than just buying — it should be
+                an experience.
+              </p>
+              <p className="text-gray-700 text-base leading-relaxed mb-4">
+                We started with a dream to connect people to quality products with
+                just a few clicks. From fashion to tech, every item is curated with
+                care.
+              </p>
+              <div className="mt-6">
+                <h3 className="text-xl font-semibold text-gray-800 mb-2">Our Mission</h3>
+                <p className="text-gray-700">
+                  To redefine convenience, deliver excellence, and create a seamless
+                  online shopping journey for everyone.
+                </p>
+              </div>
+            </div>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.6 }}
+          >
+            <img
+              src={assets.about_img}
+              alt="about"
+              className="w-full rounded-3xl shadow-xl border border-orange-100"
             />
-            <motion.div
-                className="flex flex-col justify-center gap-6 md:w-2/4 text-gray-600"
-                initial={{ opacity: 0, x: 50 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.7 }}
-            >
-                <p>
-                Forever was born out of a passion for innovation and a desire to
-                revolutionize the way people shop online. Our journey began with a
-                simple idea: to provide a platform where customers can easily
-                discover, explore, and purchase a wide range of products from the
-                comfort of their homes.
-                </p>
-                <p>
-                Since our inception, we've worked tirelessly to curate a diverse
-                selection of high-quality products that cater to every taste and
-                preference. From fashion and beauty to electronics and home
-                essentials, we offer an extensive collection sourced from trusted
-                brands and suppliers.
-                </p>
-                <b className="text-gray-800">Our Mission</b>
-                <p>
-                Our mission at Forever is to empower customers with choice,
-                convenience, and confidence. We're dedicated to providing a seamless
-                shopping experience that exceeds expectations, from browsing and
-                ordering to delivery and beyond.
-                </p>
-            </motion.div>
+          </motion.div>
         </div>
-    );
+      </div>
+    </section>
+  );
 }
