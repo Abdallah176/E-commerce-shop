@@ -1,9 +1,9 @@
-import useAuthStore from "../store/useAuthStore"; // استخدام useAuthStore بدلاً من useShopStore
+import useAuthStore from "../store/useAuthStore"; 
 
 const LogoutButton = () => {
-    const { logoutUser, isLoggedIn, user } = useAuthStore(); // استخدام store لعملية الخروج
+    const { logoutUser, isLoggedIn, user } = useAuthStore(); 
 
-    if (!isLoggedIn) return null; // إذا لم يكن المستخدم قد سجل الدخول، لا نعرض الزر
+    if (!isLoggedIn) return null;
 
     return (
         <button onClick={logoutUser} className="text-sm text-red-600 underline">

@@ -9,6 +9,7 @@ import axios from "axios";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { FaUser, FaEnvelope, FaPhone, FaMapMarkedAlt, FaCity, FaFlag, FaGlobe, FaMapPin } from "react-icons/fa";
+import useAuthStore from "../store/useAuthStore";
 
     const validationSchema = Yup.object({
     firstName: Yup.string().required("Required"),
@@ -26,23 +27,26 @@ import { FaUser, FaEnvelope, FaPhone, FaMapMarkedAlt, FaCity, FaFlag, FaGlobe, F
     const [method, setMethod] = useState("cod");
     const [loading, setLoading] = useState(false);
     const { cartItems, getCartAmount } = useShopStore();
+    const { user } = useAuthStore();
     const navigate = useNavigate();
     const total = getCartAmount();
 
     const handlePlaceOrder = async (values) => {
         setLoading(true);
+        
         const orderData = {
         ...values,
         paymentMethod: method,
         cartItems,
         total,
-        statuss: "pending"
+        statuss: "pending",
+        user: { id: user.id },
         };
 
         try {
-        const res = await axios.post("http://localhost:1337/api/orders", {
+        const res = await axios.post('http://localhost:1337/api/orders', {
             data: orderData,
-        });
+          });
         const createdOrder = res.data?.data;
 
         toast.success("Order placed successfully!");
@@ -56,9 +60,12 @@ import { FaUser, FaEnvelope, FaPhone, FaMapMarkedAlt, FaCity, FaFlag, FaGlobe, F
             });
         }, 1500);
         } catch (err) {
-        toast.error("Something went wrong, please try again.",err);
+        toast.error("Something went wrong, please try again.");
+        console.error(err)
+
         } finally {
         setLoading(false);
+        console.log(orderData);
         }
     };
 
@@ -76,7 +83,7 @@ import { FaUser, FaEnvelope, FaPhone, FaMapMarkedAlt, FaCity, FaFlag, FaGlobe, F
             state: "",
             zipcode: "",
             country: "",
-            phone: ""
+            phone: "",
             }}
             validationSchema={validationSchema}
             onSubmit={handlePlaceOrder}

@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-// import { ShopContext } from '../../context/ShopContext'
 import searchIcon from '../../assets/search_icon.png'
 import crossIcon from '../../assets/cross_icon.png'
 import { useLocation } from 'react-router-dom'
@@ -7,7 +6,6 @@ import useShopStore from '../../store/useShopStore'
 
 export default function SearchBar() {
     const {search , setSearch , showSearch , setShowSearch} = useShopStore();
-    // const {search , setSearch , showSearch , setShowSearch} = useContext(ShopContext);
     const [visible,setVisible] = useState(false);
     const location = useLocation();
 

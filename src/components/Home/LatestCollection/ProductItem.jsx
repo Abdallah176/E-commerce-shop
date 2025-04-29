@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import useShopStore from '../../store/useShopStore';
 import { FaHeart, FaRegHeart } from 'react-icons/fa';
 import { FiShoppingCart } from 'react-icons/fi';
 import { IoClose } from 'react-icons/io5';
+import useShopStore from '../../../store/useShopStore';
 
 export default function ProductItem({ id, image, name, price }) {
     const { currency, wishlist, addToWishlist, removeFromWishlist } = useShopStore();
@@ -33,7 +33,7 @@ export default function ProductItem({ id, image, name, price }) {
             <Link className='text-gray-700 cursor-pointer block' to={`/product/${id}`}>
                 <div className="relative overflow-hidden rounded-lg">
                     <img
-                        className='w-full h-auto object-cover transition-transform duration-500 group-hover:scale-110'
+                        className='w-full h-90 object-cover transition-transform duration-500 group-hover:scale-110'
                         src={image}
                         alt={name}
                     />

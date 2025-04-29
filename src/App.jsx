@@ -13,18 +13,29 @@ import Wishlist from './pages/WishList'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 import SearchBar from './components/SearchBar'
-import { ToastContainer } from 'react-toastify';
+import { ToastContainer ,Slide } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import ThankYou from './components/Contact/ThankYou'
 import MarqueeText from './components/MarqueeText'
 import ThankYouu from './components/PlaceOrder/ThankYouu'
 import Error from './pages/Error'
-
+import ProtectedRoute from './protected/ProtectedRoute'
 
 export default function App() {
   return (
     <div className='px-4 sm:px-[5vw] md:px-[7vw] lg:px-[2vw]'>
-        <ToastContainer />
+        <ToastContainer
+          position="top-right"
+          autoClose={3000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="dark"
+          transition={Slide} />
           <MarqueeText/>
           <Navbar />
           <SearchBar />
@@ -34,14 +45,14 @@ export default function App() {
             <Route path='/about' element={<About />} />
             <Route path='/contact' element={<Contact />} />
             <Route path="/thank-you" element={<ThankYou />} />
-            <Route path="/wishlist" element={<Wishlist />} /> 
+            <Route path="/wishlist" element= {<ProtectedRoute> <Wishlist /> </ProtectedRoute> }/> 
             <Route path='/product/:id' element={<Product />} />
             <Route path='/cart' element={<Cart />} />
             <Route path='/login' element={<Login />} />
-            <Route path='/place-order' element={<PlaceOrder />} />
+            <Route path='/place-order' element={<ProtectedRoute> <PlaceOrder /> </ProtectedRoute>} />
             <Route path="/thank-youu" element={<ThankYouu />} />
-            <Route path='/orders' element={<Orders />} />
-            <Route path='/error' element={<Error />} />
+            <Route path='/orders' element={<ProtectedRoute> <Orders /> </ProtectedRoute>} />
+            <Route path='*' element={<Error />} />
           </Routes>
           <Footer />
     </div>

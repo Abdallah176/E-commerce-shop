@@ -16,37 +16,66 @@ export default function Product() {
     const [size, setSize] = useState('');
     const navigate = useNavigate();
 
-    const getData = () => {
-        const documentId = params.id;
-        const url = `${domain}/api/products?filters[documentId][$eq]=${documentId}&populate=*`;
-        axios.get(url).then((res) => {
-            const data = res.data.data[0];
-            if (!data) {
-                navigate('/error');
-                return;
-            }
-            setProductData(data);
-            setImage(domain + data.image.url);
-        });
-    };
     useEffect(() => {
-        getData()
-        console.log("Fetching product by ID:", params.id);
-        console.log("productssssssss" , productData)
+        const fetchProduct = async () => {
+            try {
+                const documentId = params.id;
+                const res = await axios.get(`${domain}/api/products?filters[documentId][$eq]=${documentId}&populate=*`);
+                const data = res.data.data[0];
+                if (!data) return navigate('/error');
+                setProductData(data);
+                console.log("Product Data =>", data);
+
+                const imgData = data.images;
+                if (imgData?.length > 0) {
+                    setImage(domain + imgData[0].url);
+                } else if (data.image?.url) {
+                    setImage(domain + data.image.url);
+                } else {
+                    setImage('/fallback.jpg');
+                }
+            } catch (error) {
+                console.error("Error fetching product:", error);
+                navigate('/error');
+            }
+        };
+
+        fetchProduct();
     }, [params.id]);
 
     if (!productData) {
-        return <div className="text-center py-20 text-gray-500">Loading product...</div>;
+        return (
+            <div className="text-center py-20 text-gray-500 animate-pulse">
+                Loading product details...
+            </div>
+        );
     }
+
     return (
         <div className="border-t-2 pt-10 transition-opacity ease-in duration-500 opacity-100">
-        <div className="flex gap-12 sm:gap-12 flex-col sm:flex-row">
-            <ProductGallery images={productData.images?.data} setImage={setImage} image={image} />
-            <ProductInfo productData={productData} size={size} setSize={setSize} currency={currency} addToCart={addToCart} />
-        </div>
+            <div className="flex gap-12 sm:gap-12 flex-col sm:flex-row">
+                <ProductGallery
+                    images={productData.images?.map((img) => img)}
+                    fallbackImage={
+                        domain + (productData.image?.data?.url || "/fallback.jpg")
+                    }
+                    setImage={setImage}
+                    image={image}
+                />
+                <ProductInfo
+                    productData={productData}
+                    size={size}
+                    setSize={setSize}
+                    currency={currency}
+                    addToCart={addToCart}
+                />
+            </div>
 
-        <ProductDescription />
-        <RelatedProducts category={productData.category} subCategory={productData.subCategory} />
-    </div>
-);
+            <ProductDescription />
+            <RelatedProducts
+                   category={productData.category?.data?.name}
+                   subCategory={productData.subCategory}
+            />
+        </div>
+    );
 }

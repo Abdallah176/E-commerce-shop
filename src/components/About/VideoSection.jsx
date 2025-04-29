@@ -21,7 +21,7 @@ export default function VideoSection() {
                 <video
                     className="w-full h-auto max-h-[500px] object-cover"
                     controls
-                    poster="/images/video-poster.jpg" 
+                    poster="/src/assets/hero-sec.png" 
                 >
                     <source src="/videos/story.mp4" type="video/mp4" />
                     Your browser does not support the video tag.

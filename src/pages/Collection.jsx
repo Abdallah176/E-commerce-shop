@@ -17,7 +17,7 @@ function FilterTabs({ allItems, selectedItems, toggleItem, title }) {
             className={`px-4 py-2 rounded-full border transition text-sm
               ${selectedItems.includes(item)
                 ? "bg-orange-600 text-white border-orange-600 cursor-pointer"
-                : "bg-white text-gray-600 border-gray-300 hover:bg-gray-100 cursor-pointer"}`}
+                : "bg-white text-gray-600 border-gray-300 hover:bg-gray-100"}`}
           >
             {item}
           </button>
@@ -31,10 +31,11 @@ export default function Collection() {
   const { products, search, showSearch, fetchProducts } = useShopStore();
   const [filterProducts, setFilterProducts] = useState([]);
   const [category, setCategory] = useState([]);
-  const [subCategory, setSubCategory] = useState([]);
+  const [sub_category, setSubCategory] = useState([]);
   const [sortType, setSortType] = useState('relavent');
   const [allCategories, setAllCategories] = useState([]);
   const [allSubCategories, setAllSubCategories] = useState([]);
+  
 
   const toggleCategory = (value) => {
     setCategory(prev => prev.includes(value) ? prev.filter(v => v !== value) : [...prev, value]);
@@ -46,18 +47,37 @@ export default function Collection() {
 
   const applyFilter = () => {
     let filtered = [...products];
+  
     if (showSearch && search) {
-      filtered = filtered.filter(item => item.name.toLowerCase().includes(search.toLowerCase()));
+      const lowerSearch = search.toLowerCase();
+      filtered = filtered.filter(item => {
+        const priceStr = item.price?.toString();
+
+        return (
+          item.name.toLowerCase().includes(lowerSearch) ||
+          item.description?.toLowerCase().includes(lowerSearch) || 
+          item.category?.name?.toLowerCase().includes(lowerSearch) ||
+          item.sub_category?.name?.toLowerCase().includes(lowerSearch) ||
+          priceStr?.includes(lowerSearch)
+        );
+      });
     }
+  
     if (category.length > 0) {
-      filtered = filtered.filter(item => category.includes(item.category?.name || item.category));
+      filtered = filtered.filter(item =>
+        category.includes(item.category?.name)
+      );
     }
-    if (subCategory.length > 0) {
-        filtered = filtered.filter(item => subCategory.includes(item.sub_category?.name));
-      }
+  
+    if (sub_category.length > 0) {
+      filtered = filtered.filter(item =>
+        sub_category.includes(item.sub_category?.name)
+      );
+    }
+  
     setFilterProducts(filtered);
   };
-
+  
   const sortProduct = () => {
     let sorted = [...filterProducts];
     if (sortType === "low-high") {
@@ -77,7 +97,7 @@ export default function Collection() {
 
   useEffect(() => {
     applyFilter();
-  }, [products, category, subCategory, search, showSearch]);
+  }, [products, category, sub_category, search, showSearch]);
 
   useEffect(() => {
     sortProduct();
@@ -104,11 +124,6 @@ export default function Collection() {
     fetchFilters();
   }, []);
   
-
-
-
-
-
   return (
     <div className="pt-10 pb-10 px-4 sm:px-10 border-t space-y-6">
       <div className="flex flex-col sm:flex-row sm:justify-between gap-3 text-base sm:text-xl mb-4">
@@ -126,7 +141,7 @@ export default function Collection() {
       <FilterTabs
         title="Type"
         allItems={allSubCategories}
-        selectedItems={subCategory}
+        selectedItems={sub_category}
         toggleItem={toggleSubCategory}
       />
 

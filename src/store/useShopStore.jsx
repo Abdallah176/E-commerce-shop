@@ -5,6 +5,7 @@ import { toast } from "react-toastify";
 import axios from "axios";
 
 const domain = "http://localhost:1337";
+
 const useShopStore = create(
   persist((set, get) => ({
     products: [],
@@ -14,12 +15,16 @@ const useShopStore = create(
     showSearch: false,
     cartItems: {},
     selectedCategory: "",
+    selectedType: "",
     wishlist: [],
+    domain,
 
-    setSearch: (search) => set({ search }),
+    setSearch: (searchValue) => set({ search: searchValue }),
     setShowSearch: (value) => set({ showSearch: value }),
     setSelectedCategory: (category) => set({ selectedCategory: category }),
+    setSelectedType: (sub_category) => set({ selectedType: sub_category }),
     setProducts: (products) => set({ products }),
+    clearCart: () => set({ cartItems: {} }),
 
     getProductById: (id) => {
       return get().products.find((product) => product.id === parseInt(id));
@@ -30,6 +35,7 @@ const useShopStore = create(
         const res = await axios.get(`${domain}/api/products`, {
           params: { populate: "*" },
         });
+
         const data = res.data.data.map((item) => ({
           id: item.id,
           name: item.name,
@@ -37,22 +43,33 @@ const useShopStore = create(
           image: item.image?.url ? `${domain}${item.image.url}` : "",
           description: item.description,
           category: item.category,
-          subCategory: item.subCategory?.data?.name,
+          sub_category: item.sub_category,
           documentId: item.documentId,
         }));
+
         set({ products: data });
-      } catch (products) {
-        console.error("Failed to fetch products:", products);
-        console.log(products);
+      } catch (error) {
+        console.error("Failed to fetch products:", error);
       }
     },
 
     getFilteredProducts: () => {
-      const { products, selectedCategory } = get();
-      if (!selectedCategory) return products;
-      return products.filter(
-        (product) => product.category === selectedCategory
-      );
+      const { products, selectedCategory, selectedType } = get();
+      let filtered = products;
+
+      if (selectedCategory) {
+        filtered = filtered.filter(
+          (product) => product.category === selectedCategory
+        );
+      }
+
+      if (selectedType) {
+        filtered = filtered.filter(
+          (product) => product.sub_category === selectedType
+        );
+      }
+
+      return filtered;
     },
 
     addToWishlist: (product) => {
@@ -115,7 +132,6 @@ const useShopStore = create(
       if (cartData[itemId]) {
         if (quantity === 0) {
           delete cartData[itemId][size];
-
           if (Object.keys(cartData[itemId]).length === 0) {
             delete cartData[itemId];
           }

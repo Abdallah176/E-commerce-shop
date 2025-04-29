@@ -1,7 +1,8 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import Title from "../../Title";
-import ProductItem from "../../ProductItem";
 import axios from "axios";
+import ProductItem from "../LatestCollection/ProductItem";
+
 
 export default function BestSeller() {
     const domain = "http://localhost:1337";

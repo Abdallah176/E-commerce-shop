@@ -7,39 +7,37 @@ import { Clock, CheckCircle, XCircle, List } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 
 export default function Orders() {
-  const { currency } = useShopStore();
+  const { currency, user } = useShopStore();
   const [orders, setOrders] = useState([]);
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedStatus, setSelectedStatus] = useState("all");
+  
   useEffect(() => {
-    const fetchOrders = async () => {
+    const fetchData = async () => {
       try {
-        const res = await axios.get("http://localhost:1337/api/orders");
-        setOrders(res.data?.data);
+        const [ordersRes, productsRes] = await Promise.all([
+          axios.get("http://localhost:1337/api/orders?populate=user"),
+          axios.get("http://localhost:1337/api/products?populate=*"),
+        ]);
+        
+        let allOrders = ordersRes.data?.data || [];
+        const userOrders = allOrders.filter(
+          (order) => order.attributes?.user?.data?.id === user?.id
+        );
+
+        setOrders(userOrders);
+        setProducts(productsRes.data?.data || []);
       } catch (err) {
-        console.error("Failed to fetch orders", err);
+        console.error("Error fetching orders or products", err);
       } finally {
         setLoading(false);
       }
     };
-    fetchOrders();
-  }, []);
-
-  useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const res = await axios.get(
-          "http://localhost:1337/api/products?populate=*"
-        );
-        setProducts(res.data?.data);
-      } catch (err) {
-        console.error("Failed to fetch products", err);
-      }
-    };
-    fetchProducts();
-  }, []);
-
+  
+    fetchData();
+  }, [user]);
+  
   const statusCounts = {
     pending: orders.filter((o) => o.statuss?.toLowerCase() === "pending")
       .length,

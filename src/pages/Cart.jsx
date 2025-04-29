@@ -6,9 +6,11 @@ import { useNavigate } from "react-router-dom";
 import CartItem from "../components/Cart/CartItem";
 import EmptyCart from "../components/Cart/EmptyCart";
 import { toast } from "react-toastify";
+import useAuthStore from "../store/useAuthStore";
 
 export default function Cart() {
-    const { products, currency, cartItems, fetchProducts, isLoggedIn } = useShopStore();
+    const { products, currency, cartItems, fetchProducts} = useShopStore();
+    const { isLoggedIn } = useAuthStore();
     const [cartData, setCartData] = useState([]);
     const navigate = useNavigate();
 
@@ -74,13 +76,15 @@ export default function Cart() {
                         <CartTotal />
                         <button
                             onClick={() => {
-                                if (!isLoggedIn()) {
+                                if (!isLoggedIn) {
                                     toast.error("You must be logged in to place an order.");
-                                    navigate("/login");
+                                    setTimeout(() => {
+                                      navigate("/login");
+                                    }, 1000);
                                     return;
-                                }
-                                navigate("/place-order");
-                            }}
+                                  }
+                                  navigate("/place-order");
+                                }}
                             className="w-full px-8 py-4 rounded-full bg-black text-white font-semibold tracking-wide text-sm sm:text-base hover:bg-gray-900 transition-all duration-300 transform hover:scale-103 cursor-pointer"
                         >
                             PROCEED TO CHECKOUT

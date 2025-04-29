@@ -1,4 +1,4 @@
-import ProductItem from "../ProductItem";
+import ProductItem from "../Home/LatestCollection/ProductItem";
 
 export default function ProductList({ products }) {
     

@@ -1,82 +1,107 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import axios from 'axios';
+import { toast } from 'react-toastify'; 
+import useShopStore from './useShopStore';
 
 const domain = "http://localhost:1337";
 
-// Create a separate store for user authentication
 const useAuthStore = create(
-    persist(
-        (set, get) => ({
-            user: null,
-            isLoggedIn: false,
-            errorMessage: "",  // Add error message state
+  persist(
+    (set, get) => ({
+      user: null,
+      jwt: null,
+      errorMessage: "",
+      loading: false,
+      isLoggedIn: false, 
 
-            setUser: (user, jwt) => {
-                set({ user, isLoggedIn: true, errorMessage: "" });  // Reset error message on successful login
-                localStorage.setItem('jwt', jwt);  // Save JWT to localStorage for persistent sessions
-            },
+      setUser: (user, jwt) => {
+        set({ user, jwt, isLoggedIn: true, errorMessage: "" }); 
+        localStorage.setItem('jwt', jwt);
+      },
 
-            loginUser: async (identifier, password) => {
-                try {
-                    const res = await axios.post(`${domain}/api/auth/local`, {
-                        identifier,
-                        password,
-                    });
+      loginUser: async (identifier, password, navigate) => {
+        try {
+          set({ loading: true });
+          const res = await axios.post(`${domain}/api/auth/local`, {
+            identifier,
+            password,
+          });
 
-                    // Check if the response contains user data
-                    const { user, jwt } = res.data;
-                    if (user) {
-                        set({ user, isLoggedIn: true, errorMessage: "" });
-                        localStorage.setItem('jwt', jwt);  // Save JWT for persistent sessions
-                    } else {
-                        throw new Error("Invalid credentials");
-                    }
-                } catch (error) {
-                    console.error("Login failed", error);
-                    set({ errorMessage: "Invalid email or password" });  // Set error message for invalid login
-                }
-            },
+          const { user, jwt } = res.data;
+          if (user && jwt) {
+            set({ user, jwt, isLoggedIn: true, errorMessage: "", loading: false });
+            localStorage.setItem('jwt', jwt);
 
-            registerUser: async (username, email, password) => {
-                try {
-                    const res = await axios.post(`${domain}/api/auth/local/register`, {
-                        username,
-                        email,
-                        password,
-                    });
+            useShopStore.getState().clearCart();
+            toast.success("Welcome back! Logged in successfully");
 
-                    const { user, jwt } = res.data;
-                    if (user) {
-                        set({ user, isLoggedIn: true, errorMessage: "" });
-                        localStorage.setItem('jwt', jwt);  // Save JWT for persistent sessions
-                    } else {
-                        throw new Error("Registration failed");
-                    }
-                } catch (error) {
-                    console.error("Registration failed", error);
-                    set({ errorMessage: "Failed to register. Please try again." });  // Show error on registration failure
-                }
-            },
-
-            logoutUser: () => {
-                set({ user: null, isLoggedIn: false, errorMessage: "" });
-                localStorage.removeItem('jwt'); // Remove JWT when logged out
-            },
-
-            getToken: () => {
-                return localStorage.getItem('jwt');
-            },
-
-            clearErrorMessage: () => {
-                set({ errorMessage: "" });  // Function to clear error messages
-            },
-
-        }),
-        {
-            name: 'auth-store',  // Persist the store with a name
+            setTimeout(() => {
+              navigate("/");
+            }, 2000);
+          } else {
+            throw new Error("Invalid credentials");
+          }
+        } catch (error) {
+          console.error("Login failed", error);
+          set({ errorMessage: "Invalid email or password", loading: false });
+          toast.error("Login failed. Check your credentials!");
         }
-    )
+      },
+
+      registerUser: async (username, email, password, navigate) => {
+        set({ loading: true });
+        try {
+          const res = await axios.post(`${domain}/api/auth/local/register`, {
+            username,
+            email,
+            password,
+          });
+
+          const { user, jwt } = res.data;
+          if (user && jwt) {
+            set({ user, jwt, isLoggedIn: true, errorMessage: "", loading: false });
+            localStorage.setItem('jwt', jwt);
+            toast.success("Account created successfully");
+
+            setTimeout(() => {
+              navigate("/");
+            }, 2000);
+          } else {
+            throw new Error("Registration failed");
+          }
+        } catch (error) {
+          console.error("Registration failed", error);
+
+          let msg = "Failed to register. Please try again.";
+          if (error.response?.data?.error?.message?.includes("Email is already taken")) {
+            msg = "Email already exists. Please use another email.";
+          }
+
+          set({ errorMessage: msg, loading: false });
+          toast.error(msg);
+          return { success: false };
+        }
+      },
+
+      logoutUser: () => {
+        set({ user: null, jwt: null, isLoggedIn: false, errorMessage: "", loading: false }); // ✅ صح
+        localStorage.removeItem('jwt');
+        toast.success("Logged out successfully");
+      },
+
+      getToken: () => {
+        return get().jwt || localStorage.getItem('jwt');
+      },
+
+      clearErrorMessage: () => {
+        set({ errorMessage: "" });
+      },
+    }),
+    {
+      name: 'auth-store',
+    }
+  )
 );
 
 export default useAuthStore;

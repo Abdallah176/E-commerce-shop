@@ -1,23 +1,26 @@
 import React, { useEffect } from 'react'
-// import { ShopContext } from '../context/ShopContext'
 import { useState } from 'react';
 import Title from './Title';
-import ProductItem from './ProductItem';
 import useShopStore from '../store/useShopStore';
+import ProductItem from './Home/LatestCollection/ProductItem';
 
 export default function RelatedProducts({category,subCategory}) {
     const {products} = useShopStore();
-    // const { products } = useContext(ShopContext);
     const [related, setRelated] = useState([]);
 
     useEffect(() => {
         if (products.length > 0) {
             let productsCopy = products.slice();
-            productsCopy = productsCopy.filter((item) => category === item.category);
-            productsCopy = productsCopy.filter((item) => subCategory === item.subCategory);
-            setRelated(productsCopy.slice(0,5));
+    
+            productsCopy = productsCopy.filter((item) => item.category?.name === category);
+            productsCopy = productsCopy.filter((item) => item.Sub-category?.name === subCategory);
+    
+            setRelated(productsCopy.slice(0, 5));
+            console.log('Filtered Related:', productsCopy); 
         }
-    },[products])
+    }, [products, category, subCategory]);
+    
+    
     return (
         <div className='my-24'>
             <div className='text-center text-3xl py-2'>
