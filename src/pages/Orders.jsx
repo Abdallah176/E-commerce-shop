@@ -5,53 +5,94 @@ import OrderCard from "../components/Order/OrderCard";
 import useShopStore from "../store/useShopStore";
 import { Clock, CheckCircle, XCircle, List } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
+import useAuthStore from "../store/useAuthStore";
 
 export default function Orders() {
-  const { currency, user } = useShopStore();
-  const [orders, setOrders] = useState([]);
+  const { currency } = useShopStore();
+  const { user } = useAuthStore();
   const [products, setProducts] = useState([]);
+  const [productsIds, setProductsIds] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedStatus, setSelectedStatus] = useState("all");
-  
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const [ordersRes, productsRes] = await Promise.all([
-          axios.get("http://localhost:1337/api/orders?populate=user"),
-          axios.get("http://localhost:1337/api/products?populate=*"),
-        ]);
-        
-        let allOrders = ordersRes.data?.data || [];
-        const userOrders = allOrders.filter(
-          (order) => order.attributes?.user?.data?.id === user?.id
-        );
+  const [filterdOrders, setFilteredOrders] = useState([]);
 
-        setOrders(userOrders);
-        setProducts(productsRes.data?.data || []);
-      } catch (err) {
-        console.error("Error fetching orders or products", err);
-      } finally {
-        setLoading(false);
-      }
-    };
-  
-    fetchData();
-  }, [user]);
-  
+  const getOrders = async () => {
+    try {
+      const res = await axios.get(`http://localhost:1337/api/orders`, {
+        params: {
+          populate: "*"
+        }
+      });
+
+      setProductsIds(Object.keys(res.data.data[0].cartItems))
+      console.log(Object.keys(res.data.data[0].cartItems))
+      console.log(res.data.data[0].cartItems)
+      
+      const filterdData = res.data.data.filter((order) => order.id == user.id)
+      setFilteredOrders(filterdData);
+      setLoading(false);
+      
+      
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  const getProducts = async () => {
+    try {
+      const res = await axios.get(`http://localhost:1337/api/products/${productsIds[0]}`)
+      console.log(res.data)
+      
+      console.log(productsIds)
+      
+      
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const [ordersRes, productsRes] = await Promise.all([
+  //         axios.get(`http://localhost:1337/api/orders?populate=${user.documentId}`),
+  //         axios.get("http://localhost:1337/api/products?populate=*"),
+  //       ]);
+
+  //       let allOrders = ordersRes.data?.data || [];
+  //       const userOrders = allOrders.filter(
+  //         (order) => order?.user?.data?.id === user?.id
+  //       );
+
+  //       setOrders(userOrders);
+  //       setProducts(productsRes.data?.data || []);
+  //     } catch (err) {
+  //       console.error("Error fetching orders or products", err);
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
+
+  //   fetchData();
+  // }, [user]);
+  useEffect(() => {
+    getOrders();
+    getProducts();
+  }, []);
+
+
   const statusCounts = {
-    pending: orders.filter((o) => o.statuss?.toLowerCase() === "pending")
+    pending: filterdOrders.filter((o) => o.statuss?.toLowerCase() === "pending")
       .length,
-    completed: orders.filter((o) => o.statuss?.toLowerCase() === "completed")
+    completed: filterdOrders.filter((o) => o.statuss?.toLowerCase() === "completed")
       .length,
-    cancelled: orders.filter((o) => o.statuss?.toLowerCase() === "cancelled")
+    cancelled: filterdOrders.filter((o) => o.statuss?.toLowerCase() === "cancelled")
       .length,
-    all: orders.length,
+    all: filterdOrders.length,
   };
 
   const filteredOrders =
     selectedStatus === "all"
-      ? orders
-      : orders.filter(
+      ? filterdOrders
+      : filterdOrders.filter(
           (order) => order.statuss?.toLowerCase() === selectedStatus
         );
 
@@ -59,7 +100,7 @@ export default function Orders() {
   if (filteredOrders.length === 0) {
     return (
       <div className="py-10 text-center text-gray-500">
-        {orders.length === 0
+        {filterdOrders.length === 0
           ? "No orders found."
           : "No orders with selected status."}
       </div>
@@ -123,6 +164,7 @@ export default function Orders() {
           );
         })}
       </div>
+
       <AnimatePresence mode="wait">
         <motion.div
           key={selectedStatus}

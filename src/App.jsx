@@ -20,6 +20,7 @@ import MarqueeText from './components/MarqueeText'
 import ThankYouu from './components/PlaceOrder/ThankYouu'
 import Error from './pages/Error'
 import ProtectedRoute from './protected/ProtectedRoute'
+import BestSeller from './components/Home/BestSeller'
 
 export default function App() {
   return (
@@ -42,6 +43,7 @@ export default function App() {
           <Routes>
             <Route path='/' element={<Home />} />
             <Route path='/collection' element={<Collection />} />
+            <Route path='/bestseller' element={<BestSeller/>} />
             <Route path='/about' element={<About />} />
             <Route path='/contact' element={<Contact />} />
             <Route path="/thank-you" element={<ThankYou />} />

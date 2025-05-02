@@ -17,7 +17,7 @@ export default function BannerText() {
       Shop our newest collection and enjoy exclusive discounts on premium styles.
     </p>
     <a
-      href="/collection"
+      href="/bestseller"
       className="inline-block mt-2 px-7 py-3 bg-orange-500 text-white font-semibold rounded-full hover:bg-orange-600 transition-all duration-300"
     >
       Shop Now

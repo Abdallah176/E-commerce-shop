@@ -32,6 +32,7 @@ const useShopStore = create(
 
     fetchProducts: async () => {
       try {
+        
         const res = await axios.get(`${domain}/api/products`, {
           params: { populate: "*" },
         });

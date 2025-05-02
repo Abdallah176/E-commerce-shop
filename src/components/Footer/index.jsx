@@ -4,12 +4,12 @@ import { FaPhoneAlt, FaEnvelope, FaFacebookF, FaTwitter, FaInstagram } from 'rea
 
 export default function Footer() {
   return (
-    <footer className="bg-gray-50 text-gray-700 pt-20 px-4 sm:px-10 md:px-20">
+    <footer className="bg-black text-white pt-20 px-4 sm:px-10 md:px-20">
       <div className="flex flex-col sm:grid grid-cols-[3fr_1fr_1fr] gap-14 mb-10 text-sm">
         {/* Logo + Description */}
         <div>
           <img className="mb-5 w-32" src={LogoImg} alt="Logo" />
-          <p className="w-full md:w-2/3 text-gray-600 leading-relaxed">
+          <p className="w-full md:w-2/3 text-white leading-relaxed">
             Lorem ipsum, dolor sit amet consectetur adipisicing elit. Porro fugiat saepe praesentium hic totam rem iure in.
           </p>
           
@@ -30,10 +30,10 @@ export default function Footer() {
         {/* Company Links */}
         <div>
           <p className="text-xl font-semibold mb-5">COMPANY</p>
-          <div className="flex flex-col gap-2 text-gray-600">
+          <div className="flex flex-col gap-2 text-white">
             <a href='/' className="hover:text-orange-600 transition-all cursor-pointer">Home</a>
             <a href='/about' className="hover:text-orange-600 transition-all cursor-pointer">About Us</a>
-            <a href='/placeorder' className="hover:text-orange-600 transition-all cursor-pointer">Delivery</a>
+            <a href='/place-order' className="hover:text-orange-600 transition-all cursor-pointer">Delivery</a>
             <a href='/contact' className="hover:text-orange-600 transition-all cursor-pointer">Contact</a>
           </div>
         </div>
@@ -41,7 +41,7 @@ export default function Footer() {
         {/* Contact Info */}
         <div>
           <p className="text-xl font-semibold mb-5">GET IN TOUCH</p>
-          <ul className="flex flex-col gap-3 text-gray-600">
+          <ul className="flex flex-col gap-3 text-white">
             <li className="flex items-center gap-2">
               <FaPhoneAlt className="text-orange-600" /> +20-011-433-639-12
             </li>
@@ -54,8 +54,8 @@ export default function Footer() {
 
       {/* Footer Bottom */}
       <hr />
-      <p className="py-5 text-sm text-center text-gray-500">
-        © 2024 <span className="font-medium text-orange-600">greatstack.dev</span> – All Rights Reserved.
+      <p className="py-5 text-sm text-center text-white">
+        © 2024 <span className="font-medium text-orange-600">Revo (Store)</span> – All Rights Reserved.
       </p>
     </footer>
   )

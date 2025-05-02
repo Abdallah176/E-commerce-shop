@@ -4,8 +4,8 @@ import useShopStore from "../store/useShopStore";
 import axios from "axios";
 import ProductGallery from "../components/ProductDetails/ProductGallery";
 import ProductInfo from "../components/ProductDetails/ProductInfo";
-import ProductDescription from "../components/ProductDetails/ProductDesc";
 import RelatedProducts from "../components/RelatedProducts";
+import ProductDesc from "../components/ProductDetails/ProductDesc";
 
 export default function Product() {
     const domain = "http://localhost:1337";
@@ -70,8 +70,7 @@ export default function Product() {
                     addToCart={addToCart}
                 />
             </div>
-
-            <ProductDescription />
+            <ProductDesc />
             <RelatedProducts
                    category={productData.category?.data?.name}
                    subCategory={productData.subCategory}

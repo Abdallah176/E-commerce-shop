@@ -1,4 +1,4 @@
-import { Link, NavLink } from 'react-router-dom'
+import { Link, NavLink, useNavigate } from 'react-router-dom'
 import imgLogo from '../../assets/logoo.png'
 import searchIcon from '../../assets/search_icon.png'
 import profileIcon from '../../assets/profile_icon.png'
@@ -13,6 +13,7 @@ export default function Navbar() {
     const [visible, setVisible] = useState(false);
     const { setShowSearch, getCartCount } = useShopStore();
     const { user, isLoggedIn, logoutUser } = useAuthStore();
+    const navigate = useNavigate();
 
     return (
         <div className="flex items-center justify-between py-5 font-bold">
@@ -21,7 +22,7 @@ export default function Navbar() {
             </Link>
 
             {/* Navbar Links */}
-            <ul className='hidden sm:flex gap-4 text-lg text-gray-800'>
+            <ul className='hidden sm:flex gap-4 text-m text-gray-800'>
                 <NavLink to='/' className='flex flex-col items-center gap-1'>
                     <p>Home</p>
                     <hr className='w-2/4 h-[1.5px] bg-gray-700 hidden' />
@@ -58,7 +59,7 @@ export default function Navbar() {
                                         <p className='cursor-pointer hover:text-black'>Orders</p>
                                     </Link>
                                     <p
-                                        onClick={logoutUser}
+                                        onClick={() => logoutUser(navigate)}
                                         className='cursor-pointer hover:text-black'
                                     >
                                         Logout

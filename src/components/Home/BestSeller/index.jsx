@@ -29,7 +29,7 @@ export default function BestSeller() {
             {/* Title Section */}
             <div className="text-center mb-12 px-4">
                 <Title text1={"BEST"} text2={"SELLER"} />
-                <p className="mt-4 text-base sm:text-lg text-gray-600 max-w-2xl mx-auto">
+                <p className="mt-4 text-base sm:text-xl text-gray-600 max-w-2xl mx-auto">
                     Step into the spotlight with the newest fashion arrivals curated just for you.
                 </p>
             </div>
@@ -40,7 +40,7 @@ export default function BestSeller() {
                     return (
                         <div
                             key={el.id}
-                            className="bg-white rounded-xl shadow-md hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 p-4"
+                            className="bg-white rounded-xl shadow-md hover:shadow-l transform hover:-translate-y-1 transition-all duration-300 p-2"
                         >
                             <ProductItem
                                 key={el.id}

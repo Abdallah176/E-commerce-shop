@@ -4,6 +4,7 @@ import axios from 'axios';
 import { toast } from 'react-toastify'; 
 import useShopStore from './useShopStore';
 
+
 const domain = "http://localhost:1337";
 
 const useAuthStore = create(
@@ -84,10 +85,12 @@ const useAuthStore = create(
         }
       },
 
-      logoutUser: () => {
-        set({ user: null, jwt: null, isLoggedIn: false, errorMessage: "", loading: false }); // ✅ صح
+      logoutUser: (navigate) => {
+        set({ user: null, jwt: null, isLoggedIn: false, errorMessage: "", loading: false });
+        useShopStore.getState().clearCart()
         localStorage.removeItem('jwt');
         toast.success("Logged out successfully");
+        navigate('/')
       },
 
       getToken: () => {

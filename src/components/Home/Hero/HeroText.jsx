@@ -20,7 +20,7 @@ export default function HeroText() {
     href="#collection"
     className="relative overflow-hidden mt-4 px-8 py-3 rounded-full bg-gradient-to-r from-orange-700 via-pink-100 to-black text-white text-sm sm:text-base font-semibold tracking-wide transition-all duration-300 transform hover:scale-105 animate-fade-in delay-300 shadow-lg hover:shadow-xl"
     >
-    <a href="/lastcollection" className="relative z-10">
+    <a href="/collection" className="relative z-10">
         Shop the Collection
     </a>
 
