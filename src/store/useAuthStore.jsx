@@ -1,9 +1,8 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import axios from 'axios';
-import { toast } from 'react-toastify'; 
+import { toast } from 'react-toastify';
 import useShopStore from './useShopStore';
-
 
 const domain = "http://localhost:1337";
 
@@ -14,10 +13,10 @@ const useAuthStore = create(
       jwt: null,
       errorMessage: "",
       loading: false,
-      isLoggedIn: false, 
+      isLoggedIn: false,
 
       setUser: (user, jwt) => {
-        set({ user, jwt, isLoggedIn: true, errorMessage: "" }); 
+        set({ user, jwt, isLoggedIn: true, errorMessage: "" });
         localStorage.setItem('jwt', jwt);
       },
 
@@ -34,7 +33,7 @@ const useAuthStore = create(
             set({ user, jwt, isLoggedIn: true, errorMessage: "", loading: false });
             localStorage.setItem('jwt', jwt);
 
-            useShopStore.getState().clearCart();
+            useShopStore.getState().clearShopState();
             toast.success("Welcome back! Logged in successfully");
 
             setTimeout(() => {
@@ -87,10 +86,11 @@ const useAuthStore = create(
 
       logoutUser: (navigate) => {
         set({ user: null, jwt: null, isLoggedIn: false, errorMessage: "", loading: false });
-        useShopStore.getState().clearCart()
+        useShopStore.getState().clearShopState();
         localStorage.removeItem('jwt');
+        localStorage.removeItem('auth-store');
         toast.success("Logged out successfully");
-        navigate('/')
+        navigate('/');
       },
 
       getToken: () => {
@@ -99,6 +99,11 @@ const useAuthStore = create(
 
       clearErrorMessage: () => {
         set({ errorMessage: "" });
+      },
+
+      resetAuth: () => {
+        set({ user: null, jwt: null, isLoggedIn: false, errorMessage: "", loading: false });
+        localStorage.removeItem("auth-store");
       },
     }),
     {

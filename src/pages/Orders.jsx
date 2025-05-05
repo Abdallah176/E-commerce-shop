@@ -18,20 +18,25 @@ export default function Orders() {
 
   const getOrders = async () => {
     try {
-      const res = await axios.get(`http://localhost:1337/api/orders`, {
+      const res = await axios.get("http://localhost:1337/api/orders", {
         params: {
+          filters: {
+            user: {
+              id: {
+                $eq: user.id
+              }
+            }
+          },
           populate: "*"
         }
       });
-
       setProductsIds(Object.keys(res.data.data[0].cartItems))
       console.log(Object.keys(res.data.data[0].cartItems))
       console.log(res.data.data[0].cartItems)
       
-      const filterdData = res.data.data.filter((order) => order.id == user.id)
+      const filterdData = res.data.data.filter((order) => order?.user?.data?.id === user.id)
       setFilteredOrders(filterdData);
       setLoading(false);
-      
       
     } catch (error) {
       console.log(error)
@@ -39,12 +44,20 @@ export default function Orders() {
   }
   const getProducts = async () => {
     try {
-      const res = await axios.get(`http://localhost:1337/api/products/${productsIds[0]}`)
-      console.log(res.data)
-      
-      console.log(productsIds)
-      
-      
+      // const res = await axios.get(`http://localhost:1337/api/products/${productsIds[0]}`)
+      // console.log(res.data)
+      // console.log(productsIds)
+      const res = await axios.get(`http://localhost:1337/api/products`, {
+        params: {
+          filters: {
+            id: {
+              $in: productsIds
+            }
+          },
+          populate: "*"
+        }
+      });
+      setProducts(res.data.data);
     } catch (error) {
       console.log(error)
     }

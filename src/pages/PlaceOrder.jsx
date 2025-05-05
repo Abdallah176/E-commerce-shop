@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import useShopStore from "../store/useShopStore";
 import CartTotal from "../components/CartTotal";
 import PaymentMethods from "../components/PlaceOrder/PaymentMethods";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
@@ -56,12 +56,24 @@ export default function PlaceOrder() {
     //   user: {
     //     connect: [`${user.id}`],
     //   },
+    user : user.id,
       //   user: {id: user.documentId},
+    //   user: {
+    //     connect: [orderData.user]
+    //   },
+    //   user: {
+    //     id: userId  
+    //   }
+    
     };
 
     try {
       const res = await axios.post("http://localhost:1337/api/orders", {
-        data: orderData,
+        // data: {
+        //     ...orderData,
+        //     // user: user.id
+        //   },
+        data : orderData,
       });
       const createdOrder = res.data?.data;
 
@@ -99,7 +111,7 @@ export default function PlaceOrder() {
           zipcode: "",
           country: "",
           phone: "",
-        //   user: "",
+          user: user.id,
         }}
         validationSchema={validationSchema}
         onSubmit={handlePlaceOrder}
