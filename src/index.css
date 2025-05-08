@@ -25,7 +25,7 @@ a.active hr {
     }
 }
 /* Hero Section */
-@layer utilities {
+/* @layer utilities {
     .animate-gradient-text {
         background-size: 200% 200%;
         animation: gradientMove 6s ease infinite;
@@ -70,8 +70,80 @@ a.active hr {
         opacity: 1;
         }
     }
-}
-/* Button In Hero */
+} */
+/* Animation image Hero Section */
+@layer utilities {
+    .animate-slide-in-left {
+      animation: slideInLeft 1s ease-out forwards;
+    }
+  
+    .animate-slide-in-right {
+      animation: slideInRight 1s ease-out forwards;
+    }
+  
+    .animate-slide-in-top {
+      animation: slideInTop 1s ease-out forwards;
+    }
+  
+    @keyframes slideInLeft {
+      0% {
+        opacity: 0;
+        transform: translateX(-100%);
+      }
+      100% {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+  
+    @keyframes slideInRight {
+      0% {
+        opacity: 0;
+        transform: translateX(100%);
+      }
+      100% {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+  
+    @keyframes slideInTop {
+      0% {
+        opacity: 0;
+        transform: translateY(-100%);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  }
+  
+  /* Text In Hero */
+@keyframes ellipticalMotion {
+    0% {
+      transform: translateX(0px) translateY(0px);
+    }
+    25% {
+      transform: translateX(20px) translateY(-10px);
+    }
+    50% {
+      transform: translateX(0px) translateY(-20px);
+    }
+    75% {
+      transform: translateX(-20px) translateY(-10px);
+    }
+    100% {
+      transform: translateX(0px) translateY(0px);
+    }
+  }
+  
+  .animate-elliptical-motion {
+    display: inline-block;
+    animation: ellipticalMotion 6s ease-in-out infinite;
+  } 
+
+  /* Button In Hero */
 @keyframes shine-alternate {
     0% {
     left: -75%;
@@ -84,6 +156,3 @@ a.active hr {
 .animate-shine-alternate {
     animation: shine-alternate 2.5s ease-in-out infinite alternate;
 }
-
-
-

@@ -1,16 +1,19 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import useShopStore from "../store/useShopStore";
+// import useShopStore from "../store/useShopStore";
 import axios from "axios";
 import ProductGallery from "../components/ProductDetails/ProductGallery";
 import ProductInfo from "../components/ProductDetails/ProductInfo";
 import RelatedProducts from "../components/RelatedProducts";
 import ProductDesc from "../components/ProductDetails/ProductDesc";
+import useProductStore from "../store/useProductStore";
+import useCartStore from "../store/useCartStore";
 
 export default function Product() {
     const domain = "http://localhost:1337";
     const params = useParams();
-    const { currency, addToCart } = useShopStore();
+    const { addToCart } = useCartStore();
+    const { currency } = useProductStore();
     const [productData, setProductData] = useState(null);
     const [image, setImage] = useState('');
     const [size, setSize] = useState('');

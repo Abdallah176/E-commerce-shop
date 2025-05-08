@@ -41,7 +41,7 @@ export default function NewsLetterBox() {
 
       {subscribed && (
         <p className="mt-4 text-green-600 font-medium animate-fade-in">
-           You’ve successfully subscribed!
+          You’ve successfully subscribed!
         </p>
       )}
     </div>

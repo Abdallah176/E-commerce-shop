@@ -1,48 +1,63 @@
 import React, { useEffect, useState } from "react";
 import Title from "../../Title";
 import ProductItem from "./ProductItem";
-import axios from "axios";
+import { motion } from "framer-motion";
+import { useInView } from "react-intersection-observer";
+import { getLatestProducts } from "../../../repo/ProductsRepo";
 
 export default function LatestCollection() {
-    const domain = "http://localhost:1337";
-    const [latestProducts, setLatestProducts] = useState([]);
+  const [latestProducts, setLatestProducts] = useState([]);
+  const { ref, inView } = useInView({ triggerOnce: false, threshold: 0.2 });
 
-    const getData = () => {
-        const url = `${domain}/api/products`;
-        axios.get(url, {
-            params: {
-                populate: "*",
-                "filters[collection_type][$eq]": "latest",
-                "pagination[limit]": 10,
-            },
-        }).then((res) => {
-            setLatestProducts(res.data.data);
-            console.log(res.data.data)
-        });
+  useEffect(() => {
+    const fetchData = async () => {
+      const products = await getLatestProducts();
+      setLatestProducts(products);
     };
+    fetchData();
+  }, []);
 
-    useEffect(() => {
-        getData();
-    }, []);
+  const containerVariants = {
+    hidden: {},
+    visible: { transition: { staggerChildren: 0.15 } },
+  };
 
-    return (
-        <section className="py-16 bg-white">
-            <div className="text-center mb-12 px-4">
-                <Title text1={"LATEST"} text2={"COLLECTION"} />
-                <p className="mt-4 text-base sm:text-xl text-gray-600 max-w-2xl mx-auto">
-                    Step into the spotlight with the newest fashion arrivals curated just for you
-                </p>
-            </div>
+  const itemVariants = {
+    hidden: { opacity: 0, y: 40 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: "easeOut" } },
+  };
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-5 gap-6 px-4">
-                {latestProducts.map((el) => (
-                    <ProductItem
-                        key={el.id} id={el.documentId} image={domain + el.image.url} name={el.name} price={el.price} 
-                    />
-                ))}
-            </div>
-        </section>
-    );
+  return (
+    <section className="py-16 bg-white" ref={ref}>
+      <motion.div
+        initial={{ opacity: 0, y: -50 }}
+        animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: -50 }}
+        transition={{ duration: 0.7 }}
+        className="text-center mb-12 px-4"
+      >
+        <Title text1="LATEST" text2="COLLECTION" />
+        <p className="mt-4 text-base sm:text-xl text-gray-600 max-w-2xl mx-auto">
+          Step into the spotlight with the newest fashion arrivals curated just for you
+        </p>
+      </motion.div>
+
+      <motion.div
+        className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-5 gap-6 px-4"
+        variants={containerVariants}
+        initial="hidden"
+        animate={inView ? "visible" : "hidden"}
+      >
+        {latestProducts.map((el) => (
+          <motion.div key={el.id} variants={itemVariants}>
+            <ProductItem
+              id={el.documentId}
+              image={`http://localhost:1337${el.image.url}`}
+              name={el.name}
+              price={el.price}
+            />
+          </motion.div>
+        ))}
+      </motion.div>
+    </section>
+  );
 }
-
-

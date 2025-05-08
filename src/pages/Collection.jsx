@@ -2,8 +2,9 @@ import { useEffect, useState } from "react";
 import Title from "../components/Title";
 import ProductList from "../components/Collection/ProductList";
 import SortDropdown from "../components/Collection/SortDropdown";
-import useShopStore from "../store/useShopStore";
+// import useShopStore from "../store/useShopStore";
 import axios from 'axios';
+import useProductStore from "../store/useProductStore";
 
 function FilterTabs({ allItems, selectedItems, toggleItem, title }) {
   return (
@@ -28,7 +29,7 @@ function FilterTabs({ allItems, selectedItems, toggleItem, title }) {
 }
 
 export default function Collection() {
-  const { products, search, showSearch, fetchProducts } = useShopStore();
+  const { products, search, showSearch, fetchProducts } = useProductStore();
   const [filterProducts, setFilterProducts] = useState([]);
   const [category, setCategory] = useState([]);
   const [sub_category, setSubCategory] = useState([]);

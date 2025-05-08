@@ -2,14 +2,21 @@ import { useLocation } from "react-router-dom";
 import Lottie from "lottie-react";
 import successAnimation from '../../assets/success-animation.json';
 import { useEffect, useState } from "react";
-import useShopStore from "../../store/useShopStore";
+// import useShopStore from "../../store/useShopStore";
+import useProductStore from "../../store/useProductStore";
 
 export default function ThankYouu() {
     const { state } = useLocation(); 
-    const { getProductById } = useShopStore();
+    const { getProductById , fetchProducts, products } = useProductStore();
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
+        console.log("✅ ThankYou page loaded");
+        console.log("✅ Order ID from Strapi:", state?.orderId);
+        console.log("✅ Full state:", state);
+        if (products.length === 0) {
+            fetchProducts();
+          }
         const timer = setTimeout(() => setLoading(false), 2000);
         return () => clearTimeout(timer);
     }, []);
@@ -58,14 +65,14 @@ export default function ThankYouu() {
                         <div className="w-full max-w-md bg-white border rounded-md shadow p-5 text-sm text-gray-700">
                             <h3 className="text-lg font-semibold mb-4">Items Ordered</h3>
                             {Object.entries(state.cartItems).map(([productId, sizes]) => {
-                                const product = getProductById(productId);
+                               const product = getProductById(Number(productId));
 
                                 return (
                                     <div key={productId} className="mb-4">
                                         {product ? (
                                             <div className="flex items-center gap-3">
                                                 <img
-                                                    src={`http://localhost:1337${product.image.url}`}
+                                                    src={product.image}
                                                     // alt={product.name}
                                                     className="w-16 h-16 object-cover rounded"
                                                 />

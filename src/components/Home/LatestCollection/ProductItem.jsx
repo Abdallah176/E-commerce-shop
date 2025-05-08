@@ -3,13 +3,15 @@ import { Link } from 'react-router-dom';
 import { FaHeart, FaRegHeart } from 'react-icons/fa';
 import { FiShoppingCart } from 'react-icons/fi';
 import { IoClose } from 'react-icons/io5';
-import useShopStore from '../../../store/useShopStore';
+import useWishlistStore from '../../../store/useWishlistStore';
+import useProductStore from '../../../store/useProductStore';
 
 export default function ProductItem({ id, image, name, price }) {
-    const { currency, wishlist, addToWishlist, removeFromWishlist } = useShopStore();
+    const { wishlist, addToWishlist, removeFromWishlist } = useWishlistStore();
+    const {currency} = useProductStore(); 
     const [liked, setLiked] = useState(wishlist.some(item => item.id === id));
     const [showAlert, setShowAlert] = useState(false);
-
+    
     const handleAddToWishlist = (e) => {
         e.preventDefault();
         if (liked) {
@@ -52,7 +54,7 @@ export default function ProductItem({ id, image, name, price }) {
 
             <button
                 onClick={handleAddToCart}
-                className="mt-3 flex items-center justify-center gap-2 w-full py-2 text-sm bg-black text-white rounded-full hover:bg-gray-800 transition-all duration-300 cursor-pointer"
+                className="mt-3 flex items-center justify-center gap-2 w-full py-2 text-sm bg-black text-white rounded-full hover:bg-gray-800 transition-all duration-100 cursor-pointer"
             >
                 <FiShoppingCart className="text-lg" />
                 Add to Cart

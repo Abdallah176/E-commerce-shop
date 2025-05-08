@@ -1,49 +1,65 @@
 import React from "react";
 import { assets } from "../../assets/assets";
-import useShopStore from "../../store/useShopStore";
+import useCartStore from "../../store/useCartStore";
 
 export default function CartItem({ item, productData, currency }) {
-    const { updateQuantity } = useShopStore();
+  const { updateQuantity } = useCartStore();
 
-    return (
-        <div className="py-4 border-t border-b text-gray-700 grid grid-cols-[4fr_0.5fr_0.5fr] sm:grid-cols-[4fr_2fr_0.5fr] items-center gap-4">
-            <div className="flex items-start gap-6">
-                <img
-                    className="w-16 sm:w-20 object-cover rounded"
-                    src={productData.image}
-                    alt={productData.name}
-                />
-                <div>
-                    <p className="text-xs sm:text-lg font-medium">{productData.name}</p>
-                    <div className="flex items-center gap-5 mt-2">
-                        <p>
-                            {currency}
-                            Price : {productData.price * item.quantity}
-                            <br /> Quantity : {item.quantity}
-                        </p>
-                        <p className="px-2 sm:py-1 border bg-slate-50">{item.size}</p>
-                    </div>
-                </div>
-            </div>
-
-            <input
-                onChange={(e) =>
-                    e.target.value === "" || e.target.value === "0"
-                        ? null
-                        : updateQuantity(item.id, item.size, Number(e.target.value))
-                }
-                className="border max-w-10 sm:max-w-20 px-1 py-1"
-                type="number"
-                min={1}
-                defaultValue={item.quantity}
-            />
-
-            <img
-                onClick={() => updateQuantity(item.id, item.size, 0)}
-                className="w-4 mr-4 sm:w-5 cursor-pointer"
-                src={assets.bin_icon}
-                alt="delete"
-            />
+  return (
+    <div className="bg-white/60 rounded-xl shadow-md p-4 mb-4 flex flex-col sm:flex-row items-center justify-between gap-4 transition-all hover:shadow-lg">
+      {/* Left: Product Info */}
+      <div className="flex items-start gap-4 w-full sm:w-[60%]">
+        <img
+          className="w-20 h-20 object-cover rounded-lg"
+          src={productData.image}
+          alt={productData.name}
+        />
+        <div className="space-y-2">
+          <p className="text-base sm:text-lg font-semibold text-gray-800">
+            {productData.name}
+          </p>
+          <div className="flex items-center gap-3 text-sm sm:text-base text-gray-600">
+            <p>
+              {currency}
+              {(productData.price * item.quantity).toFixed(2)}
+            </p>
+            <span className="bg-gray-100 px-2 py-1 rounded text-xs sm:text-sm border">
+              Size: {item.size}
+            </span>
+            <span className="text-gray-500">Qty: {item.quantity}</span>
+          </div>
         </div>
-    );
+      </div>
+
+      {/* Middle: Quantity Input */}
+      <div className="flex items-center gap-2">
+        <input
+          type="number"
+          min={1}
+          defaultValue={item.quantity}
+          onChange={(e) =>
+            e.target.value === "" || e.target.value === "0"
+              ? null
+              : updateQuantity(
+                  productData.id,
+                  item.size,
+                  Number(e.target.value)
+                )
+          }
+          className="w-14 sm:w-20 px-2 py-1 border border-gray-300 rounded-lg text-center focus:outline-none focus:ring-2 focus:ring-orange-400"
+        />
+      </div>
+
+      {/* Right: Delete Icon */}
+      <div className="flex justify-end sm:justify-center">
+        <img
+          onClick={() => updateQuantity(productData.id, item.size, 0)}
+          src={assets.bin_icon}
+          alt="delete"
+          className="w-5 sm:w-6 cursor-pointer hover:scale-110 transition-transform"
+        />
+      </div>
+    </div>
+  );
 }
+

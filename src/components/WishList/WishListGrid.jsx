@@ -1,8 +1,9 @@
 import { FaTrashAlt } from 'react-icons/fa'; 
-import useShopStore from "../../store/useShopStore";
+// import useShopStore from "../../store/useShopStore";
+import useWishlistStore from '../../store/useWishlistStore';
 
 export default function WishlistGrid() {
-    const { wishlist, removeFromWishlist } = useShopStore();
+    const { wishlist, removeFromWishlist } = useWishlistStore();
 
     if (wishlist.length === 0) {
         return <p className="text-center text-lg text-gray-500">Your wishlist is empty.</p>;

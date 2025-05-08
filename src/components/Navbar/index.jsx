@@ -6,12 +6,15 @@ import cartIcon from '../../assets/cart_icon.png'
 import menuIcon from '../../assets/menu_icon.png'
 import backIcon from '../../assets/dropdown_icon.png'
 import { useState } from 'react'
-import useShopStore from '../../store/useShopStore'
+// import useShopStore from '../../store/useShopStore'
 import useAuthStore from '../../store/useAuthStore'
+import useProductStore from '../../store/useProductStore'
+import useCartStore from '../../store/useCartStore'
 
 export default function Navbar() {
     const [visible, setVisible] = useState(false);
-    const { setShowSearch, getCartCount } = useShopStore();
+    const { setShowSearch} = useProductStore();
+    const { getCartCount } = useCartStore();
     const { user, isLoggedIn, logoutUser } = useAuthStore();
     const navigate = useNavigate();
 

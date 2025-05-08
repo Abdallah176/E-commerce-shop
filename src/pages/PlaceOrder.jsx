@@ -1,10 +1,6 @@
-import { useEffect, useState } from "react";
-import useShopStore from "../store/useShopStore";
-import CartTotal from "../components/CartTotal";
-import PaymentMethods from "../components/PlaceOrder/PaymentMethods";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
@@ -18,7 +14,13 @@ import {
   FaGlobe,
   FaMapPin,
 } from "react-icons/fa";
+
+import "react-toastify/dist/ReactToastify.css";
 import useAuthStore from "../store/useAuthStore";
+import useCartStore from "../store/useCartStore";
+import useProductStore from "../store/useProductStore";
+import CartTotal from "../components/CartTotal";
+import PaymentMethods from "../components/PlaceOrder/PaymentMethods";
 
 const validationSchema = Yup.object({
   firstName: Yup.string().required("Required"),
@@ -35,14 +37,14 @@ const validationSchema = Yup.object({
 export default function PlaceOrder() {
   const [method, setMethod] = useState("cod");
   const [loading, setLoading] = useState(false);
-  const { cartItems, getCartAmount } = useShopStore();
-  const { user } = useAuthStore();
   const navigate = useNavigate();
-  const total = getCartAmount();
 
-  useEffect(() => {
-    console.log(user.documentId);
-  }, []);
+  const { user, jwt } = useAuthStore();
+  const { cartItems, getFormattedCartItems, delivery_fee } = useCartStore();
+  const { products } = useProductStore();
+  const formattedItems = getFormattedCartItems(products);
+  const subtotal = formattedItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
+  const total = subtotal + delivery_fee;
 
   const handlePlaceOrder = async (values) => {
     setLoading(true);
@@ -53,32 +55,29 @@ export default function PlaceOrder() {
       cartItems,
       total,
       statuss: "pending",
-    //   user: {
-    //     connect: [`${user.id}`],
-    //   },
-    user : user.id,
-      //   user: {id: user.documentId},
-    //   user: {
-    //     connect: [orderData.user]
-    //   },
-    //   user: {
-    //     id: userId  
-    //   }
-    
     };
 
     try {
-      const res = await axios.post("http://localhost:1337/api/orders", {
-        // data: {
-        //     ...orderData,
-        //     // user: user.id
-        //   },
-        data : orderData,
+      const res = await axios.post("http://localhost:1337/api/orders", { 
+        data: {
+          ...orderData,
+          // user: {
+          //   connect: [user.id]
+          // }
+          // user: {
+          //   id: user.id
+          // }
+          user : user.id
+        },
+      }, {
+        headers: {
+          Authorization: `Bearer ${jwt}`,
+        },
       });
+
       const createdOrder = res.data?.data;
-
       toast.success("Order placed successfully!");
-
+      // console.log(res.data.data)
       setTimeout(() => {
         navigate("/thank-youu", {
           state: {
@@ -88,11 +87,11 @@ export default function PlaceOrder() {
         });
       }, 1500);
     } catch (err) {
-      toast.error("Something went wrong, please try again.", err);
-      //   console.error(err);
+      toast.error("Something went wrong, please try again.");
+      console.error(err);
+
     } finally {
       setLoading(false);
-      console.log(orderData);
     }
   };
 
@@ -111,7 +110,6 @@ export default function PlaceOrder() {
           zipcode: "",
           country: "",
           phone: "",
-          user: user.id,
         }}
         validationSchema={validationSchema}
         onSubmit={handlePlaceOrder}
@@ -121,39 +119,15 @@ export default function PlaceOrder() {
             <h2 className="text-xl font-semibold mb-4">Delivery Information</h2>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <InputField
-                name="firstName"
-                icon={<FaUser />}
-                placeholder="First Name"
-              />
-              <InputField
-                name="lastName"
-                icon={<FaUser />}
-                placeholder="Last Name"
-              />
-              <InputField
-                name="email"
-                icon={<FaEnvelope />}
-                placeholder="Email"
-              />
+              <InputField name="firstName" icon={<FaUser />} placeholder="First Name" />
+              <InputField name="lastName" icon={<FaUser />} placeholder="Last Name" />
+              <InputField name="email" icon={<FaEnvelope />} placeholder="Email" />
               <InputField name="phone" icon={<FaPhone />} placeholder="Phone" />
-              <InputField
-                name="street"
-                icon={<FaMapMarkedAlt />}
-                placeholder="Street Address"
-              />
+              <InputField name="street" icon={<FaMapMarkedAlt />} placeholder="Street Address" />
               <InputField name="city" icon={<FaCity />} placeholder="City" />
               <InputField name="state" icon={<FaFlag />} placeholder="State" />
-              <InputField
-                name="zipcode"
-                icon={<FaMapPin />}
-                placeholder="Zip Code"
-              />
-              <InputField
-                name="country"
-                icon={<FaGlobe />}
-                placeholder="Country"
-              />
+              <InputField name="zipcode" icon={<FaMapPin />} placeholder="Zip Code" />
+              <InputField name="country" icon={<FaGlobe />} placeholder="Country" />
             </div>
           </Form>
         )}

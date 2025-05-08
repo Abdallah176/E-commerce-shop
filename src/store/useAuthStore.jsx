@@ -2,7 +2,8 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import axios from 'axios';
 import { toast } from 'react-toastify';
-import useShopStore from './useShopStore';
+import useProductStore from './useProductStore';
+import useCartStore from './useCartStore'; 
 
 const domain = "http://localhost:1337";
 
@@ -17,6 +18,7 @@ const useAuthStore = create(
 
       setUser: (user, jwt) => {
         set({ user, jwt, isLoggedIn: true, errorMessage: "" });
+        console.log(user)
         localStorage.setItem('jwt', jwt);
       },
 
@@ -29,13 +31,15 @@ const useAuthStore = create(
           });
 
           const { user, jwt } = res.data;
+          console.log('1 : ', user)
           if (user && jwt) {
             set({ user, jwt, isLoggedIn: true, errorMessage: "", loading: false });
             localStorage.setItem('jwt', jwt);
+            console.log('2 : ', user)
+            useProductStore.getState().clearShopState();
+            useCartStore.getState().clearCart(); 
 
-            useShopStore.getState().clearShopState();
             toast.success("Welcome back! Logged in successfully");
-
             setTimeout(() => {
               navigate("/");
             }, 2000);
@@ -62,8 +66,10 @@ const useAuthStore = create(
           if (user && jwt) {
             set({ user, jwt, isLoggedIn: true, errorMessage: "", loading: false });
             localStorage.setItem('jwt', jwt);
-            toast.success("Account created successfully");
 
+            useCartStore.getState().clearCart();
+
+            toast.success("Account created successfully");
             setTimeout(() => {
               navigate("/");
             }, 2000);
@@ -86,9 +92,13 @@ const useAuthStore = create(
 
       logoutUser: (navigate) => {
         set({ user: null, jwt: null, isLoggedIn: false, errorMessage: "", loading: false });
-        useShopStore.getState().clearShopState();
+
+        useProductStore.getState().clearShopState();
+        useCartStore.getState().clearCart(); 
+
         localStorage.removeItem('jwt');
         localStorage.removeItem('auth-store');
+
         toast.success("Logged out successfully");
         navigate('/');
       },
@@ -103,6 +113,9 @@ const useAuthStore = create(
 
       resetAuth: () => {
         set({ user: null, jwt: null, isLoggedIn: false, errorMessage: "", loading: false });
+
+        useCartStore.getState().clearCart(); 
+
         localStorage.removeItem("auth-store");
       },
     }),
