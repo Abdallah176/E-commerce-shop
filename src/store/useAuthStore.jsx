@@ -64,14 +64,15 @@ const useAuthStore = create(
 
           const { user, jwt } = res.data;
           if (user && jwt) {
-            set({ user, jwt, isLoggedIn: true, errorMessage: "", loading: false });
+            // set({ user, jwt, isLoggedIn: true, errorMessage: "", loading: false });
+            set({ loading: false });
             localStorage.setItem('jwt', jwt);
 
             useCartStore.getState().clearCart();
 
             toast.success("Account created successfully");
             setTimeout(() => {
-              navigate("/");
+              navigate("/login");
             }, 2000);
           } else {
             throw new Error("Registration failed");

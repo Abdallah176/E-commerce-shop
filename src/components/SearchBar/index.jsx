@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import searchIcon from '../../assets/search_icon.png'
 import crossIcon from '../../assets/cross_icon.png'
 import { useLocation } from 'react-router-dom'
-// import useShopStore from '../../store/useShopStore'
 import useProductStore from '../../store/useProductStore'
 
 export default function SearchBar() {
@@ -11,7 +10,7 @@ export default function SearchBar() {
     const location = useLocation();
 
     useEffect(() => {
-        if (location.pathname.includes('collection') ){
+        if (location.pathname.includes('collection')){
             setVisible(true);
         } else {
             setVisible(false);
@@ -19,12 +18,22 @@ export default function SearchBar() {
     },[location])
 
     return showSearch && visible ? (
-        <div className='border-t border-b bg-gray-50 text-center'>
-            <div className='inline-flex items-center justify-center border border-gray-400 px-5 py-2 my-5 mx-3 rounded-full w-3/4 sm:w-1/2'>
-                <input value={search} onChange={(e)=>setSearch(e.target.value)} className='flex-1 outline-none bg-inherit text-sm' type="text" placeholder='Search' />
-                <img className='w-4' src={searchIcon} />
-            </div>
-            <img onClick={() =>setShowSearch(false)} className='inline w-3 cursor-pointer' src={crossIcon} />
+        <div className='flex flex-col items-center border-t border-b bg-gray-50 py-4 px-2'>
+        <div className='relative w-full sm:w-1/2'>
+          <input
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            type="text"
+            placeholder="Search products..."
+            className="w-full pl-12 pr-10 py-2 rounded-full border border-gray-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-black focus:border-black transition"
+          />
+          <img src={searchIcon} className="absolute left-4 top-2.5 w-5 h-5" />
+          <img
+            src={crossIcon}
+            onClick={() => setShowSearch(false)}
+            className="absolute right-4 top-2.5 w-4 h-4 cursor-pointer hover:scale-110 transition"
+          />
         </div>
+      </div>      
     ) : null 
 }

@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import Title from "../../Title";
-import ProductItem from "./ProductItem";
 import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
+import ProductItem from "../Product/ProductItem";
 import { getLatestProducts } from "../../../repo/ProductsRepo";
 
 export default function LatestCollection() {

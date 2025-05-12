@@ -22,4 +22,4 @@ export const fetchBestSellerProducts = async () => {
       },
     });
     return res.data.data;
-};
+  };

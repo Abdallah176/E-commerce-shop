@@ -16,11 +16,13 @@ import SearchBar from './components/SearchBar'
 import { ToastContainer ,Slide } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import ThankYou from './components/Contact/ThankYou'
-import MarqueeText from './components/MarqueeText'
 import ThankYouu from './components/PlaceOrder/ThankYouu'
 import Error from './pages/Error'
 import ProtectedRoute from './protected/ProtectedRoute'
 import BestSeller from './components/Home/BestSeller'
+import MarqueeText from './components/Navbar/MarqueeText'
+import Register from './pages/Register'
+
 
 export default function App() {
   return (
@@ -50,6 +52,7 @@ export default function App() {
             <Route path="/wishlist" element= {<ProtectedRoute> <Wishlist /> </ProtectedRoute> }/> 
             <Route path='/product/:id' element={<Product />} />
             <Route path='/cart' element={<Cart />} />
+            <Route path='/register' element={<Register />} />
             <Route path='/login' element={<Login />} />
             <Route path='/place-order' element={<ProtectedRoute> <PlaceOrder /> </ProtectedRoute>} />
             <Route path="/thank-youu" element={<ThankYouu />} />

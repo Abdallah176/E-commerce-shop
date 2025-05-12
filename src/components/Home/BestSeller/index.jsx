@@ -1,9 +1,8 @@
-// src/components/Collection/BestSeller.jsx
 import { useEffect, useState } from "react";
 import Title from "../../Title";
-import ProductItem from "../LatestCollection/ProductItem";
 import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
+import ProductItem from "../Product/ProductItem";
 import { getBestSellerProducts } from "../../../repo/ProductsRepo";
 
 export default function BestSeller() {

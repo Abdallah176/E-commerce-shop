@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
-import Title from './Title';
-import useProductStore from "../store/useProductStore";
-import useCartStore from "../store/useCartStore";
+import Title from "../Title";
+import useProductStore from "../../store/useProductStore";
+import useCartStore from "../../store/useCartStore";
 
 export default function CartTotal() {
   const { currency, products } = useProductStore();

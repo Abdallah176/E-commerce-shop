@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import Title from "../components/Title";
-import CartTotal from "../components/CartTotal";
 import { useNavigate } from "react-router-dom";
 import CartItem from "../components/Cart/CartItem";
 import EmptyCart from "../components/Cart/EmptyCart";
@@ -8,6 +7,7 @@ import { toast } from "react-toastify";
 import useAuthStore from "../store/useAuthStore";
 import useProductStore from "../store/useProductStore";
 import useCartStore from "../store/useCartStore";
+import CartTotal from "../components/Cart/CartTotal";
 
 export default function Cart() {
   const { products, currency, fetchProducts } = useProductStore();
@@ -50,7 +50,7 @@ export default function Cart() {
               >
                 <CartItem
                   item={item}
-                  productData={item} // `item` now already includes all product data
+                  productData={item} 
                   currency={currency}
                 />
               </div>

@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import Title from "../components/Title";
 import OrderCard from "../components/Order/OrderCard";
-// import useShopStore from "../store/useShopStore";
 import { Clock, CheckCircle, XCircle, List } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import useAuthStore from "../store/useAuthStore";
@@ -10,106 +9,86 @@ import useProductStore from "../store/useProductStore";
 
 export default function Orders() {
   const { currency } = useProductStore();
-  const { user,jwt } = useAuthStore();
+  const { user, jwt } = useAuthStore();
   const [products, setProducts] = useState([]);
   const [productsIds, setProductsIds] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedStatus, setSelectedStatus] = useState("all");
-  const [filterdOrders, setFilteredOrders] = useState([]);
+  const [filteredOrders, setFilteredOrders] = useState([]);
 
   const getOrders = async () => {
     try {
-      const res = await axios.get(
-        `http://localhost:1337/api/orders?populate=*&filters[user][id][$eq]=${user.id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${jwt}`,
-          },
-        }
+      const res = await axios.get(`http://localhost:1337/api/orders?populate=*`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${jwt}`,
+        },
+      });
+
+      const allOrders = res.data.data;
+
+      const userOrders = allOrders.filter(order => order?.user?.data?.id === user.documenId)
+        .map(order => ({
+          id: order.id,
+          ...order,
+        }));
+
+      const allProductIds = userOrders.flatMap(order =>
+        Object.keys(order.cartItems || {})
       );
-      setProductsIds(Object.keys(res.data.data[0].cartItems))
-      console.log(Object.keys(res.data.data[0].cartItems))
-      console.log('ali : ' , res.data.data)
-      console.log(res.data.data[0].cartItems)
-      console.log(productsIds)
-      
-      const filterdData = res.data.data.filter( (order) => order?.user?.data?.id === user?.id)
-      setFilteredOrders(filterdData);
+      const uniqueProductIds = [...new Set(allProductIds)];
+
+      setProductsIds(uniqueProductIds);
+      setFilteredOrders(userOrders);
       setLoading(false);
-      console.log(res.data.data)
       
     } catch (error) {
       console.log("Error fetching orders", error);
+      console.log(user)
       setLoading(false);
     }
-  }
+  };
+
   const getProducts = async () => {
+    if (productsIds.length === 0) return;
+
     try {
-      // const res = await axios.get(`http://localhost:1337/api/products/${productsIds[0]}`)
-      // console.log(res.data)
-      // console.log(productsIds)
-      const res = await axios.get(`http://localhost:1337/api/products`, {
-        params: {
-          populate: "*"
-        }
-      });
+      const query = productsIds.map(id => `filters[id][$in]=${id}`).join("&");
+      const res = await axios.get(`http://localhost:1337/api/products?populate=*&${query}`);
       setProducts(res.data.data || []);
     } catch (error) {
       console.log("Error fetching products", error);
     }
-  }
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const [ordersRes, productsRes] = await Promise.all([
-  //         axios.get(`http://localhost:1337/api/orders?populate=${user.documentId}`),
-  //         axios.get("http://localhost:1337/api/products?populate=*"),
-  //       ]);
-
-  //       let allOrders = ordersRes.data?.data || [];
-  //       const userOrders = allOrders.filter(
-  //         (order) => order?.user?.data?.id === user?.id
-  //       );
-
-  //       setOrders(userOrders);
-  //       setProducts(productsRes.data?.data || []);
-  //     } catch (err) {
-  //       console.error("Error fetching orders or products", err);
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   };
-
-  //   fetchData();
-  // }, [user]);
-  useEffect(() => {
-    getOrders();
-    getProducts();
-  }, []);
-
-
-  const statusCounts = {
-    pending: filterdOrders.filter((o) => o.statuss?.toLowerCase() === "pending")
-      .length,
-    completed: filterdOrders.filter((o) => o.statuss?.toLowerCase() === "completed")
-      .length,
-    cancelled: filterdOrders.filter((o) => o.statuss?.toLowerCase() === "cancelled")
-      .length,
-    all: filterdOrders.length,
   };
 
-  const filteredOrders =
+  useEffect(() => {
+    getOrders();
+  }, []);
+
+  useEffect(() => {
+    getProducts();
+  }, [productsIds]);
+
+  const statusCounts = {
+    pending: filteredOrders.filter((o) => o.statuss?.toLowerCase() === "pending").length,
+    completed: filteredOrders.filter((o) => o.statuss?.toLowerCase() === "completed").length,
+    cancelled: filteredOrders.filter((o) => o.statuss?.toLowerCase() === "cancelled").length,
+    all: filteredOrders.length,
+  };
+
+  const displayedOrders =
     selectedStatus === "all"
-      ? filterdOrders
-      : filterdOrders.filter(
+      ? filteredOrders
+      : filteredOrders.filter(
           (order) => order.statuss?.toLowerCase() === selectedStatus
         );
 
   if (loading) return <div className="p-10">Loading orders...</div>;
-  if (filteredOrders.length === 0) {
+
+  if (displayedOrders.length === 0) {
     return (
       <div className="py-10 text-center text-gray-500">
-        {filterdOrders.length === 0
+        {filteredOrders.length === 0
           ? "No orders found."
           : "No orders with selected status."}
       </div>
@@ -183,7 +162,7 @@ export default function Orders() {
           transition={{ duration: 0.3 }}
           className="space-y-10"
         >
-          {filteredOrders.map((order) => (
+          {displayedOrders.map((order) => (
             <OrderCard
               key={order.id}
               order={order}
@@ -196,6 +175,7 @@ export default function Orders() {
     </div>
   );
 }
+
 // import { useEffect, useState } from "react";
 // import axios from "axios";
 // import Title from "../components/Title";

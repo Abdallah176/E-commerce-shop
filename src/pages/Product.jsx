@@ -1,13 +1,12 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-// import useShopStore from "../store/useShopStore";
 import axios from "axios";
 import ProductGallery from "../components/ProductDetails/ProductGallery";
-import ProductInfo from "../components/ProductDetails/ProductInfo";
-import RelatedProducts from "../components/RelatedProducts";
+import RelatedProducts from "../components/Home/RelatedProducts/RelatedProducts";
 import ProductDesc from "../components/ProductDetails/ProductDesc";
 import useProductStore from "../store/useProductStore";
 import useCartStore from "../store/useCartStore";
+import ProductInfo from "../components/ProductDetails/ProductInfo/ProductInfo";
 
 export default function Product() {
     const domain = "http://localhost:1337";
@@ -25,6 +24,7 @@ export default function Product() {
                 const documentId = params.id;
                 const res = await axios.get(`${domain}/api/products?filters[documentId][$eq]=${documentId}&populate=*`);
                 const data = res.data.data[0];
+                
                 if (!data) return navigate('/error');
                 setProductData(data);
                 console.log("Product Data =>", data);

@@ -44,6 +44,7 @@ const useProductStore = create((set, get) => ({
         description: item.description,
         category: item.category,
         sub_category: item.sub_category,
+        documentId: item.documentId,
       }));
 
       set({ products: data });

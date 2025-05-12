@@ -1,9 +1,8 @@
 import React, { useEffect } from 'react'
 import { useState } from 'react';
-import Title from './Title';
-// import useShopStore from '../store/useShopStore';
-import ProductItem from './Home/LatestCollection/ProductItem';
-import useProductStore from '../store/useProductStore';
+import Title from '../../Title';
+import useProductStore from '../../../store/useProductStore';
+import ProductItem from '../Product/ProductItem';
 
 export default function RelatedProducts({category,subCategory}) {
     const {products} = useProductStore();

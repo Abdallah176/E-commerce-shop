@@ -1,4 +1,3 @@
-// eslint-disable-next-line no-unused-vars
 import { toast, ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import ContactTitle from "../components/Contact/ContactTitle";

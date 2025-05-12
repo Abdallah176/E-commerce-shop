@@ -19,8 +19,8 @@ import "react-toastify/dist/ReactToastify.css";
 import useAuthStore from "../store/useAuthStore";
 import useCartStore from "../store/useCartStore";
 import useProductStore from "../store/useProductStore";
-import CartTotal from "../components/CartTotal";
 import PaymentMethods from "../components/PlaceOrder/PaymentMethods";
+import CartTotal from "../components/Cart/CartTotal";
 
 const validationSchema = Yup.object({
   firstName: Yup.string().required("Required"),
@@ -39,7 +39,7 @@ export default function PlaceOrder() {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  const { user, jwt } = useAuthStore();
+  const { user,jwt } = useAuthStore();
   const { cartItems, getFormattedCartItems, delivery_fee } = useCartStore();
   const { products } = useProductStore();
   const formattedItems = getFormattedCartItems(products);
@@ -55,25 +55,32 @@ export default function PlaceOrder() {
       cartItems,
       total,
       statuss: "pending",
+      // email: user?.email || values.email,
     };
 
     try {
-      const res = await axios.post("http://localhost:1337/api/orders", { 
-        data: {
-          ...orderData,
+      const res = await axios.post(`http://localhost:1337/api/orders?populate=*`, 
+          { 
+            data: {
+              ...orderData,
+              // user: user?.id 
+            },
+          },
+          // user: user.id,
           // user: {
           //   connect: [user.id]
           // }
           // user: {
           //   id: user.id
           // }
-          user : user.id
-        },
-      }, {
-        headers: {
-          Authorization: `Bearer ${jwt}`,
-        },
-      });
+            // user: user?.id ? { connect: [user.id] } : undefined,
+         {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${jwt}`,
+        }
+      },
+    );
 
       const createdOrder = res.data?.data;
       toast.success("Order placed successfully!");
