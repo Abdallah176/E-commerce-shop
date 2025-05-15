@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 export default function GoogleMap() {
     return (
         <motion.div
-            className="mt-24 overflow-hidden rounded-xl shadow-lg"
+            className="mt-24 mb-10 overflow-hidden rounded-xl shadow-lg"
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             transition={{ duration: 1 }}

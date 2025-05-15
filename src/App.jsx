@@ -22,6 +22,7 @@ import ProtectedRoute from './protected/ProtectedRoute'
 import BestSeller from './components/Home/BestSeller'
 import MarqueeText from './components/Navbar/MarqueeText'
 import Register from './pages/Register'
+import "react-toastify/dist/ReactToastify.css";
 
 
 export default function App() {

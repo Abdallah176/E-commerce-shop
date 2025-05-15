@@ -26,7 +26,7 @@ export default function ThankYouu() {
     );
 
     return (
-        <div className="min-h-screen flex flex-col items-center justify-center px-4 pt-12">
+        <div className="min-h-screen flex flex-col items-center justify-center px-4 pt-12 mb-10">
             <div className="w-72 mb-6">
                 <Lottie animationData={successAnimation} loop={true} />
             </div>

@@ -30,9 +30,10 @@ export default function ContactForm() {
         };
 
         try {
-            await axios.post( "http://localhost:1337/api/contact-messages",
-                { 
-                    data: payload 
+            await axios.post(
+                "http://localhost:1337/api/contact-messages",
+                {
+                    data: payload
                 },
                 {
                     headers: {
@@ -71,6 +72,7 @@ export default function ContactForm() {
                                 Your Name
                             </label>
                             <Field
+                                id="name"
                                 aria-label="Your Name"
                                 type="text"
                                 name="name"
@@ -85,6 +87,7 @@ export default function ContactForm() {
                                 Your Email
                             </label>
                             <Field
+                                id="email"
                                 aria-label="Your Email"
                                 type="email"
                                 name="email"
@@ -99,6 +102,7 @@ export default function ContactForm() {
                                 Your Message
                             </label>
                             <Field
+                                id="message"
                                 aria-label="Your Message"
                                 as="textarea"
                                 name="message"
