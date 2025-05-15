@@ -2,7 +2,7 @@ import useAuthStore from "../store/useAuthStore";
 import { useState, useEffect } from "react";
 import { Loader2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import imgUrl from "../assets/Banner.png";
+import imgUrl from "../assets/bann.png";
 import { Eye, EyeOff } from "lucide-react";
 
 export default function Login() {

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import useAuthStore from "../store/useAuthStore";
-import imgUrl from "../assets/banner.png";
+import imgUrl from "../assets/bann.png";
 import { Loader2 } from "lucide-react";
 
 export default function Register() {

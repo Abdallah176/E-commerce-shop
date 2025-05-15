@@ -1,5 +1,5 @@
 import React from 'react'
-import BannerImg from '../../../assets/Banner.png';
+import BannerImg from '../../../assets/bann.png';
 import { motion } from 'framer-motion';
 
 export default function BannerImage() {
